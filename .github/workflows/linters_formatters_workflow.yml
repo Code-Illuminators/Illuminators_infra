@@ -31,6 +31,7 @@ jobs:
             pip install pylint
           else
             echo "You should add requirements.txt if there is python code"
+          fi
 
       - name: Run Pylint
         run: pylint $(git ls-files '*.py') --fail-under=6.0
