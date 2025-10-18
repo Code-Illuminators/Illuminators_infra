@@ -1,17 +1,12 @@
-# This workfrow includes the next listers and formaters check:
-# Pylint - for .py files
-# ShellCheck - for .sh files
-# Prettier
-
 name: Linters and Formatters
 
 on:
-  push: #all branches
+  push:
 
   workflow_dispatch:
 
 jobs:
-  Pylint: #for pylint used solution from marketplace
+  Pylint:
     name: Pylint
     runs-on: ubuntu-latest
     steps:
@@ -51,13 +46,13 @@ jobs:
 
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
-        continue-on-error: true #temporary solution
+        continue-on-error: true
         with:
           check_together: "yes"
-          severity: error #only report when the issue is error
-          format: gcc #has single-line log messages
+          severity: error
+          format: gcc
         env:
-          SHELLCHECK_OPTS: -s bash #test against bash shell
+          SHELLCHECK_OPTS: -s bash
 
   prettier:
     name: Prettier
@@ -75,4 +70,4 @@ jobs:
         run: npm install prettier
 
       - name: Run Prettier and make changes
-        run: npx prettier . --check #will display only files that are not formated, not to change them --write
+        run: npx prettier . --check
