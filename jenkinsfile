@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Test Git SSH') {
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'github_ssh',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        echo "Testing SSH access to GitHub"
+                        GIT_SSH_COMMAND="ssh -i $SSH_KEY -o StrictHostKeyChecking=no" \
+                        git ls-remote git@github.com:Code-Illuminators/Illuminators_infra.git HEAD
+                    '''
+                }
+            }
+        }
+    }
+}
