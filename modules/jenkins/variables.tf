@@ -1,10 +1,10 @@
 variable "ami" {
-  type = string
+  type    = string
   default = "ami-08697da0e8d9f59ec"
 }
 
 variable "instance_type_jk" {
-  type = string
+  type    = string
   default = "c7i-flex.large"
 }
 
@@ -13,7 +13,7 @@ variable "jenkins_ec2_instance" {
 }
 
 variable "user_data" {
-  type = string
+  type    = string
   default = null
 }
 

@@ -1,9 +1,8 @@
 resource "aws_vpc" "main_vpc" {
-  cidr_block = var.vpc_cidr
-  instance_tenancy = "default"
-  region = var.region
+  cidr_block           = var.vpc_cidr
+  instance_tenancy     = "default"
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
     Name = var.vpc_tag_name
@@ -11,8 +10,8 @@ resource "aws_vpc" "main_vpc" {
 }
 
 resource "aws_subnet" "jenkins_private_subnet" {
-  vpc_id = aws_vpc.main_vpc.id
-  cidr_block = var.jenkins_pv_sb_cidr
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = var.jenkins_pv_sb_cidr
   availability_zone = var.availability_zone_pv_subnet
 
   tags = {
@@ -21,10 +20,10 @@ resource "aws_subnet" "jenkins_private_subnet" {
 }
 
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id = aws_vpc.main_vpc.id
+  vpc_id                  = aws_vpc.main_vpc.id
   map_public_ip_on_launch = true
-  cidr_block = var.public_subnet_1_cidr
-  availability_zone = var.availability_zone_pub_subnet
+  cidr_block              = var.public_subnet_1_cidr
+  availability_zone       = var.availability_zone_pub_subnet
 
   tags = {
     Name = var.jenkins_pub_sb_1
@@ -54,8 +53,8 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_eip" "nat_eip" {
-  depends_on = [ aws_internet_gateway.gw ]
-  domain = "vpc"
+  depends_on = [aws_internet_gateway.gw]
+  domain     = "vpc"
 
   tags = {
     Name = "nat_eip"
@@ -64,7 +63,7 @@ resource "aws_eip" "nat_eip" {
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id = aws_subnet.public_subnet_1.id
+  subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
     Name = "nat_gw"
@@ -75,7 +74,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 resource "aws_route_table" "private" {
 
   route {
-    cidr_block = var.rt_pv_cidr
+    cidr_block     = var.rt_pv_cidr
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
   vpc_id = aws_vpc.main_vpc.id
@@ -87,11 +86,11 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "pub_rt_association" {
-  subnet_id = aws_subnet.public_subnet_1.id
+  subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "pv_rt_association" {
-  subnet_id = aws_subnet.jenkins_private_subnet.id
+  subnet_id      = aws_subnet.jenkins_private_subnet.id
   route_table_id = aws_route_table.private.id
 }

@@ -1,13 +1,13 @@
 variable "vpc_cidr" {
-    type = string
+  type = string
 }
 
 variable "vpc_tag_name" {
-    type = string
+  type = string
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "eu-central-1"
 }
 
@@ -16,7 +16,7 @@ variable "jenkins_pv_sb_cidr" {
 }
 
 variable "availability_zone_pv_subnet" {
-  type = string
+  type    = string
   default = "eu-central-1c"
 }
 
@@ -29,7 +29,7 @@ variable "public_subnet_1_cidr" {
 }
 
 variable "availability_zone_pub_subnet" {
-  type = string
+  type    = string
   default = "eu-central-1c"
 }
 
@@ -38,11 +38,11 @@ variable "jenkins_pub_sb_1" {
 }
 
 variable "rt_pub_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 
 variable "rt_pv_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }

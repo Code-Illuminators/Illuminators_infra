@@ -1,6 +1,6 @@
 resource "aws_instance" "jenkins_ec2" {
-  ami = var.ami
-  subnet_id = var.subnet_id
+  ami           = var.ami
+  subnet_id     = var.subnet_id
   instance_type = var.instance_type_jk
 
   iam_instance_profile = aws_iam_instance_profile.ssm_profile.name
@@ -36,7 +36,7 @@ resource "aws_iam_role" "jenkins_ssm" {
 }
 
 resource "aws_iam_role_policy_attachment" "ssm_attach" {
-  role = aws_iam_role.jenkins_ssm.name
+  role       = aws_iam_role.jenkins_ssm.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
@@ -51,7 +51,7 @@ resource "aws_iam_instance_profile" "ssm_profile" {
 
 
 resource "aws_iam_role_policy_attachment" "jenkins_ecr" {
-  role = aws_iam_role.jenkins_ssm.name
+  role       = aws_iam_role.jenkins_ssm.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
 
@@ -59,10 +59,10 @@ resource "aws_security_group" "jenkins_sg" {
   vpc_id = var.vpc_id
 
   egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"] 
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
