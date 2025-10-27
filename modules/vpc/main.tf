@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnet_1" {
   availability_zone       = var.availability_zone_pub_subnet
 
   tags = {
-    Name = var.jenkins_pub_sb_1
+    Name = var.jenkins_pub_sb_tag
   }
 }
 
@@ -34,7 +34,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "gw"
+    Name = var.internet_gateway
   }
 }
 
@@ -47,9 +47,8 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "public_rt"
+    Name = var.public_rt_tag
   }
-
 }
 
 resource "aws_eip" "nat_eip" {
@@ -57,7 +56,7 @@ resource "aws_eip" "nat_eip" {
   domain     = "vpc"
 
   tags = {
-    Name = "nat_eip"
+    Name = var.nat_eip_tag
   }
 }
 
@@ -66,7 +65,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
-    Name = "nat_gw"
+    Name = var.nat_gw_tag
   }
 }
 
@@ -80,9 +79,8 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "private_rt"
+    Name = var.private_rt_tag
   }
-
 }
 
 resource "aws_route_table_association" "pub_rt_association" {

@@ -1,7 +1,7 @@
 resource "aws_instance" "jenkins_ec2" {
-  ami           = var.ami
-  subnet_id     = var.subnet_id
-  instance_type = var.instance_type_jk
+  ami           = var.jenkins_instance_ami
+  subnet_id     = var.jenkins_subnet_id
+  instance_type = var.jenkins_instance_type
 
   iam_instance_profile = aws_iam_instance_profile.ssm_profile.name
 
@@ -9,11 +9,10 @@ resource "aws_instance" "jenkins_ec2" {
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
 
   tags = {
-    Name = var.jenkins_ec2_instance
+    Name = var.jenkins_ec2_tag
   }
 
-  user_data = var.user_data
-
+  user_data = var.jenkins_user_data
 }
 
 resource "aws_iam_role" "jenkins_ssm" {
@@ -31,7 +30,7 @@ resource "aws_iam_role" "jenkins_ssm" {
     ]
   })
   tags = {
-    Name = "jenkins_ssm_role"
+    Name = var.jenkins_ssm_role_tag
   }
 }
 
@@ -45,7 +44,7 @@ resource "aws_iam_instance_profile" "ssm_profile" {
   role = aws_iam_role.jenkins_ssm.name
 
   tags = {
-    Name = "ssm_profile"
+    Name = var.ssm_profile_tag
   }
 }
 
@@ -56,7 +55,7 @@ resource "aws_iam_role_policy_attachment" "jenkins_ecr" {
 }
 
 resource "aws_security_group" "jenkins_sg" {
-  vpc_id = var.vpc_id
+  vpc_id = var.jenkins_vpc_id
 
   egress {
     from_port   = 0
@@ -66,7 +65,6 @@ resource "aws_security_group" "jenkins_sg" {
   }
 
   tags = {
-    Name = "jenkins_sg"
+    Name = var.jenkins_sg_tag
   }
-
 }
