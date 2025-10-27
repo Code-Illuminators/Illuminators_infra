@@ -5,8 +5,9 @@ resource "aws_instance" "jenkins_ec2" {
 
   iam_instance_profile = aws_iam_instance_profile.ssm_profile.name
 
-
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
+
+  associate_public_ip_address = false
 
   tags = {
     Name = var.jenkins_ec2_tag

@@ -1,4 +1,12 @@
 terraform {
+  backend "s3" {
+    bucket               = "illuminators-tfstate"
+    region               = "us-east-1"
+    key                  = "dev-setup/dev.tfstate"
+    dynamodb_table       = "terraform-locks"
+    encrypt              = true
+    workspace_key_prefix = ""
+  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"

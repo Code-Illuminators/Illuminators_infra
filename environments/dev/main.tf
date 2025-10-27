@@ -33,3 +33,9 @@ module "ecr" {
   illuminators_frontend_ecr = var.illuminators_frontend_ecr
   illuminators_service_ecr  = var.illuminators_service_ecr
 }
+
+module "terraform_backend" {
+  source              = "../../modules/terraform_backend"
+  bucket_name         = var.bucket_name
+  dynamodb_table_name = var.dynamodb_table_name
+}
