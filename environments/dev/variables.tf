@@ -81,8 +81,3 @@ variable "bucket_name" {
   type        = string
   description = "name of bucket for tfstate"
 }
-
-variable "dynamodb_table_name" {
-  type        = string
-  description = "name of dynamodb table"
-}

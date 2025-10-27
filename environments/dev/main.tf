@@ -35,7 +35,6 @@ module "ecr" {
 }
 
 module "terraform_backend" {
-  source              = "../../modules/terraform_backend"
-  bucket_name         = var.bucket_name
-  dynamodb_table_name = var.dynamodb_table_name
+  source      = "../../modules/terraform_backend"
+  bucket_name = var.bucket_name
 }
