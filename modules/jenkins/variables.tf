@@ -1,18 +1,13 @@
 variable "jenkins_instance_ami" {
   description = "ami id to use for the Jenkins ec2 instance"
   type        = string
-  default     = "ami-08697da0e8d9f59ec"
+  default     = "ami-07860a2d7eb515d9a"
 }
 
 variable "jenkins_instance_type" {
   description = "ec2 instance type for the Jenkins server"
   type        = string
   default     = "c7i-flex.large"
-}
-
-variable "jenkins_ec2_tag" {
-  description = "name for the Jenkins ec2 instance"
-  type        = string
 }
 
 variable "jenkins_user_data" {
@@ -31,18 +26,18 @@ variable "jenkins_vpc_id" {
   type        = string
 }
 
-variable "jenkins_ssm_role_tag" {
-  description = "ssm role for tag Jenkins instance"
+variable "env" {
   type        = string
-  default     = "jenkins_ssm_role"
+  description = "name of the environment"
 }
 
-variable "ssm_profile_tag" {
-  type        = string
-  description = "ssm profile tag for Jenkins"
-}
-
-variable "jenkins_sg_tag" {
-  type        = string
-  description = "security group tag for Jenkins"
+variable "common_tags" {
+  type = map(string)
+  default = {
+    CreatedBy   = "Terraform"
+    Project     = "Illuminators_app"
+    Environment = "Dev"
+    Repository  = "github.com/Code-Illuminators/Illuminators_infra"
+    Module      = "Infra"
+  }
 }

@@ -1,11 +1,5 @@
-# VPC
 variable "vpc_cidr" {
   description = "cidr for the vpc"
-  type        = string
-}
-
-variable "vpc_tag_name" {
-  description = "Tag name for the vpc"
   type        = string
 }
 
@@ -14,43 +8,23 @@ variable "jenkins_pv_sb_cidr" {
   type        = string
 }
 
-variable "jenkins_pv_sb_tag" {
-  description = "Tag for Jenkins private subnet"
-  type        = string
-}
-
-variable "availability_zone_pv_subnet" {
-  description = "Availability zone for Jenkins private subnet"
-  type        = string
-}
-
-variable "public_subnet_1_cidr" {
+variable "public_subnet_cidr" {
   description = "cidr for public subnet"
   type        = string
 }
 
-variable "jenkins_pub_sb_tag" {
-  description = "Tag for Jenkins public subnet"
-  type        = string
-}
-
-variable "availability_zone_pub_subnet" {
-  description = "Availability zone for public subnet"
-  type        = string
-}
-
-# Jenkins
-variable "jenkins_ec2_instance" {
-  description = "Name of Jenkins EC2 instance"
+variable "availability_zone" {
+  description = "Availability zone"
   type        = string
 }
 
 variable "ami" {
   description = "AMI ID for Jenkins EC2"
   type        = string
+  default     = "ami-07860a2d7eb515d9a"
 }
 
-variable "instance_type_jk" {
+variable "jenkins_instance_type" {
   description = "EC2 instance type for Jenkins"
   type        = string
 }
@@ -61,23 +35,17 @@ variable "user_data" {
   default     = null
 }
 
-# ECR
-variable "illuminators_backend_ecr" {
-  description = "Name of backend ECR repository"
+variable "env" {
   type        = string
+  description = "name of the environment"
 }
 
-variable "illuminators_frontend_ecr" {
-  description = "Name of frontend ECR repository"
+variable "project" {
   type        = string
+  description = "project name"
 }
 
-variable "illuminators_service_ecr" {
-  description = "Name of service ECR repository"
-  type        = string
-}
-
-variable "bucket_name" {
-  type        = string
-  description = "name of bucket for tfstate"
+variable "ecr_set" {
+  type        = map(string)
+  description = "set of ecr"
 }

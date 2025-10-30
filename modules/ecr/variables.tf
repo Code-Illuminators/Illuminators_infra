@@ -1,20 +1,14 @@
-variable "illuminators_backend_ecr" {
+variable "env" {
   type        = string
-  description = "Name of the backend ECR repository"
+  description = "name of the environment"
 }
 
-variable "illuminators_frontend_ecr" {
+variable "project" {
   type        = string
-  description = "Name of the frontend ECR repository"
+  description = "variable for project name"
 }
 
-variable "illuminators_service_ecr" {
-  type        = string
-  description = "Name of the service ECR repository"
-}
-
-variable "ecr_image_tag_mutability" {
-  type        = string
-  default     = "MUTABLE"
-  description = "Should ECR image tags be mutable or immutable"
+variable "ecr_set" {
+  type        = map(string)
+  description = "set of ecr"
 }

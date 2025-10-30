@@ -4,38 +4,38 @@ resource "aws_vpc" "main_vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = {
-    Name = var.vpc_tag_name
-  }
+  tags = merge(var.common_tags, {
+    Name = "vpc_${var.env}"
+  })
 }
 
 resource "aws_subnet" "jenkins_private_subnet" {
   vpc_id            = aws_vpc.main_vpc.id
   cidr_block        = var.jenkins_pv_sb_cidr
-  availability_zone = var.availability_zone_pv_subnet
+  availability_zone = var.availability_zone
 
-  tags = {
-    Name = var.jenkins_pv_sb_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "jenkins_private_sb_${var.env}"
+  })
 }
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id                  = aws_vpc.main_vpc.id
   map_public_ip_on_launch = true
-  cidr_block              = var.public_subnet_1_cidr
-  availability_zone       = var.availability_zone_pub_subnet
+  cidr_block              = var.public_subnet_cidr
+  availability_zone       = var.availability_zone
 
-  tags = {
-    Name = var.jenkins_pub_sb_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "jenkins_pub_sb_${var.env}"
+  })
 }
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main_vpc.id
 
-  tags = {
-    Name = var.internet_gateway
-  }
+  tags = merge(var.common_tags, {
+    Name = "internet_gateway_${var.env}"
+  })
 }
 
 resource "aws_route_table" "public" {
@@ -46,27 +46,27 @@ resource "aws_route_table" "public" {
   }
   vpc_id = aws_vpc.main_vpc.id
 
-  tags = {
-    Name = var.public_rt_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "public_rt_${var.env}"
+  })
 }
 
 resource "aws_eip" "nat_eip" {
   depends_on = [aws_internet_gateway.gw]
   domain     = "vpc"
 
-  tags = {
-    Name = var.nat_eip_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "nat_eip_${var.env}"
+  })
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = aws_subnet.public_subnet_1.id
 
-  tags = {
-    Name = var.nat_gw_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "nat_gw_${var.env}"
+  })
 }
 
 
@@ -78,9 +78,9 @@ resource "aws_route_table" "private" {
   }
   vpc_id = aws_vpc.main_vpc.id
 
-  tags = {
-    Name = var.private_rt_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "private_rt_${var.env}"
+  })
 }
 
 resource "aws_route_table_association" "pub_rt_association" {

@@ -9,9 +9,9 @@ resource "aws_instance" "jenkins_ec2" {
 
   associate_public_ip_address = false
 
-  tags = {
-    Name = var.jenkins_ec2_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "jenkins_instance_${var.env}"
+  })
 
   user_data = var.jenkins_user_data
 }
@@ -30,9 +30,9 @@ resource "aws_iam_role" "jenkins_ssm" {
       }
     ]
   })
-  tags = {
-    Name = var.jenkins_ssm_role_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "jenkins_ssm_role_${var.env}"
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "ssm_attach" {
@@ -44,9 +44,9 @@ resource "aws_iam_instance_profile" "ssm_profile" {
   name = "SSMInstanceProfile"
   role = aws_iam_role.jenkins_ssm.name
 
-  tags = {
-    Name = var.ssm_profile_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "ssm_profile_${var.env}"
+  })
 }
 
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "jenkins_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name = var.jenkins_sg_tag
-  }
+  tags = merge(var.common_tags, {
+    Name = "jenkins_sg_${var.env}"
+  })
 }

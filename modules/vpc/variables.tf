@@ -3,11 +3,6 @@ variable "vpc_cidr" {
   type        = string
 }
 
-variable "vpc_tag_name" {
-  description = "tag of vpc on AWS"
-  type        = string
-}
-
 variable "region" {
   description = "region of the vpc"
   type        = string
@@ -19,31 +14,15 @@ variable "jenkins_pv_sb_cidr" {
   type        = string
 }
 
-variable "availability_zone_pv_subnet" {
-  description = "availability zone of private subnet"
-  type        = string
-  default     = "us-east-1c"
-}
-
-variable "jenkins_pv_sb_tag" {
-  description = "tag of the private subnet"
-  type        = string
-}
-
-variable "public_subnet_1_cidr" {
+variable "public_subnet_cidr" {
   description = "cidr of the public subnet"
   type        = string
 }
 
-variable "availability_zone_pub_subnet" {
-  description = "availability zone of public subnet"
+variable "availability_zone" {
+  description = "availability zone"
   type        = string
   default     = "us-east-1c"
-}
-
-variable "jenkins_pub_sb_tag" {
-  description = "tag of the private subnet"
-  type        = string
 }
 
 variable "rt_pub_cidr" {
@@ -63,22 +42,18 @@ variable "internet_gateway" {
   description = "internet gateway tag"
 }
 
-variable "public_rt_tag" {
+variable "env" {
   type        = string
-  description = "public route table tag"
+  description = "name of the environment"
 }
 
-variable "nat_eip_tag" {
-  type        = string
-  description = "nat elastic ip tag"
-}
-
-variable "nat_gw_tag" {
-  type        = string
-  description = "nat gateway tag"
-}
-
-variable "private_rt_tag" {
-  type        = string
-  description = "private route table tag"
+variable "common_tags" {
+  type = map(string)
+  default = {
+    CreatedBy   = "Terraform"
+    Project     = "Illuminators_app"
+    Environment = "Dev"
+    Repository  = "github.com/Code-Illuminators/Illuminators_infra"
+    Module      = "Infra"
+  }
 }

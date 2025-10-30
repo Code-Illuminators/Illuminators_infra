@@ -1,4 +1,4 @@
-variable "bucket_name" {
+variable "backend_bucket_name" {
   type        = string
-  description = "bucket name"
+  description = "s3 bucket name for terraform backend"
 }
