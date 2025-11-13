@@ -1,4 +1,3 @@
-
 # Session Manager Plugin
 
 This plugin helps you to use the AWS Command Line Interface (AWS CLI) to start and end sessions to your managed instances. Session Manager is a capability of AWS Systems Manager.
@@ -24,9 +23,10 @@ For information about troubleshooting, see [Troubleshooting Session Manager](htt
 The default compiled version is 1.2.0.0. We strongly recommend you manually update to version 1.3.0.0 before you compile. This step is crucial to ensure you have access to the latest features and functionality.
 
 To update the version:
+
 1. Locate the version information in the following files:
-    - `src/version/version.go`
-    - `VERSION`
+   - `src/version/version.go`
+   - `VERSION`
 2. In both files, update the version number from 1.2.0.0 to 1.3.0.0.
 3. Save the changes and recompile the plugin with the updated version number.
 
@@ -39,10 +39,13 @@ To build the Session Manager plugin in a `Docker` container, complete the follow
 1. Install [`docker`](https://docs.docker.com/engine/install/centos/)
 
 2. Build the `docker` image
+
 ```
 docker build -t session-manager-plugin-image .
 ```
+
 3. Build the plugin
+
 ```
 docker run -it --rm --name session-manager-plugin -v `pwd`:/session-manager-plugin session-manager-plugin-image make release
 ```
@@ -79,11 +82,11 @@ The `ssmcli` binary is available for some operating systems for testing purposes
 
 Source code
 
-* `sessionmanagerplugin/session` contains the source code for core functionalities
-* `communicator/` contains the source code for websocket related operations
-* `vendor/src` contains the vendor package source code
-* `packaging/` contains rpm and dpkg artifacts
-* `Tools/src` contains build scripts
+- `sessionmanagerplugin/session` contains the source code for core functionalities
+- `communicator/` contains the source code for websocket related operations
+- `vendor/src` contains the vendor package source code
+- `packaging/` contains rpm and dpkg artifacts
+- `Tools/src` contains build scripts
 
 ## Feedback
 
