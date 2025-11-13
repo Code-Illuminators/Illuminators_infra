@@ -1,8 +1,3 @@
-variable "vpc_cidr" {
-  description = "cidr of the vpc"
-  type        = string
-}
-
 variable "env" {
   description = "name of the environment"
   type        = string
@@ -23,11 +18,6 @@ variable "region" {
   description = "region of the vpc"
   type        = string
   default     = "us-east-1"
-}
-
-variable "private_subnet_cidr" {
-  description = "cidr of the private subnet where Jenkins is"
-  type        = string
 }
 
 variable "public_subnet_cidr" {
@@ -56,4 +46,14 @@ variable "rt_pv_cidr" {
 variable "internet_gateway" {
   type        = string
   description = "internet gateway tag"
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "id of the vpc"
+}
+
+variable "jenkins_subnet_id" {
+  type        = string
+  description = "id of the jenkins' subnet"
 }

@@ -22,3 +22,4 @@ variable "availability_zone" {
   type        = string
   description = "name of availability zone"
 }
+
