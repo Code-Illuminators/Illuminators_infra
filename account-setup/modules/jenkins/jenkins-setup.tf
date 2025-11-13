@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "ssm_attach" {
 }
 
 resource "aws_iam_instance_profile" "ssm_profile" {
-  name = "SSMInstanceProfile"
+  name = "SSMInstanceProfiles"
   role = aws_iam_role.jenkins_ssm.name
 
   tags = merge(var.common_tags, {
@@ -68,4 +68,10 @@ resource "aws_security_group" "jenkins_sg" {
   tags = merge(var.common_tags, {
     Name = "jenkins_sg_${var.env}"
   })
+}
+
+resource "aws_ecr_repository" "illuminators_ecr_set" {
+  for_each             = var.ecr_set
+  name                 = "${each.value}_${var.env}"
+  image_tag_mutability = "MUTABLE"
 }

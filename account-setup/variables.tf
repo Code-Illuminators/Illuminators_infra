@@ -1,17 +1,17 @@
-variable "vpc_cidr" {
-  description = "cidr for the vpc"
-  type        = string
-}
+# variable "vpc_cidr" {
+#   description = "cidr for the vpc"
+#   type        = string
+# }
 
-variable "jenkins_pv_sb_cidr" {
-  description = "cidr for Jenkins private subnet"
-  type        = string
-}
+# variable "private_subnet_cidr" {
+#   description = "cidr for Jenkins private subnet"
+#   type        = string
+# }
 
-variable "public_subnet_cidr" {
-  description = "cidr for public subnet"
-  type        = string
-}
+# variable "public_subnet_cidr" {
+#   description = "cidr for public subnet"
+#   type        = string
+# }
 
 variable "availability_zone" {
   description = "Availability zone"

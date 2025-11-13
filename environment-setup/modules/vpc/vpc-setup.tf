@@ -9,13 +9,13 @@ resource "aws_vpc" "main_vpc" {
   })
 }
 
-resource "aws_subnet" "jenkins_private_subnet" {
+resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.main_vpc.id
-  cidr_block        = var.jenkins_pv_sb_cidr
+  cidr_block        = var.private_subnet_cidr
   availability_zone = var.availability_zone
 
   tags = merge(var.common_tags, {
-    Name = "jenkins_private_sb_${var.env}"
+    Name = "private_subnet_${var.availability_zone}"
   })
 }
 
@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnet_1" {
   availability_zone       = var.availability_zone
 
   tags = merge(var.common_tags, {
-    Name = "jenkins_pub_sb_${var.env}"
+    Name = "public_subnet_${var.availability_zone}"
   })
 }
 
@@ -89,6 +89,6 @@ resource "aws_route_table_association" "pub_rt_association" {
 }
 
 resource "aws_route_table_association" "pv_rt_association" {
-  subnet_id      = aws_subnet.jenkins_private_subnet.id
+  subnet_id      = aws_subnet.private_subnet.id
   route_table_id = aws_route_table.private.id
 }

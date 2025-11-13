@@ -41,3 +41,26 @@ variable "common_tags" {
     Module      = "Infra"
   }
 }
+
+variable "region" {
+  type        = string
+  default     = "us-east-1"
+  description = "region of the all resources"
+}
+
+variable "availability_zone" {
+  description = "availability zone"
+  type        = string
+  default     = "us-east-1c"
+}
+
+variable "ecr_set" {
+  type        = map(string)
+  description = "set of ecr"
+}
+
+variable "project" {
+  type        = string
+  description = "variable for project name"
+}
+

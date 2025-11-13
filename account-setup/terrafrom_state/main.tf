@@ -1,6 +1,10 @@
+provider "aws" {
+  region = "us-east-1"
+}
+
 terraform {
   backend "s3" {
-    bucket       = "illuminators-terraform-backend-dev"
+    bucket       = "terraform-state-illuminators"
     region       = "us-east-1"
     key          = "dev-setup/dev.tfstate"
     encrypt      = true
