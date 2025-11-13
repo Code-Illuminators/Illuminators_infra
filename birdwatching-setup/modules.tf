@@ -7,6 +7,7 @@ module "lb" {
   instance-type         = var.instance-type
   availability-zone     = var.availability-zone
   dns-name              = var.dns-name
+  common_tags           = local.common_tags
   #data var block
   vpc-cidr-block            = data.aws_vpc.account-vpc.cidr_block
   public-route-table-id     = data.aws_route_table.public-route-table.id
@@ -25,6 +26,7 @@ module "db" {
   instance-type           = var.instance-type
   private-subnets-for-web = var.private-subnets-for-web
   availability-zone       = var.availability-zone
+  common_tags             = local.common_tags
   #data var block
   vpc-cidr-block         = data.aws_vpc.account-vpc.cidr_block
   public-jenkins-key     = data.aws_key_pair.jenkins-key-pair.key_name
@@ -40,6 +42,7 @@ module "web-servers-instances" {
   region                  = var.region
   instance-type           = var.instance-type
   availability-zone       = var.availability-zone
+  common_tags             = local.common_tags
   #data var block
   vpc-cidr-block         = data.aws_vpc.account-vpc.cidr_block
   public-jenkins-key     = data.aws_key_pair.jenkins-key-pair.key_name

@@ -3,7 +3,6 @@ variable "name" {
   type        = string
 }
 
-variable "tags" {
-  type    = map(string)
-  default = {}
+variable "common_tags" {
+  type = map(string)
 }

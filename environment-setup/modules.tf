@@ -4,6 +4,7 @@ module "environment-vpc" {
   env               = var.env
   availability-zone = var.availability-zone
   region            = var.region
+  common_tags       = local.common_tags
 }
 
 module "consul" {

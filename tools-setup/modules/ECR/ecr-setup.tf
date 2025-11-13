@@ -9,6 +9,4 @@ resource "aws_ecr_repository" "ecr" {
   encryption_configuration {
     encryption_type = "AES256"
   }
-
-  tags = var.tags
 }

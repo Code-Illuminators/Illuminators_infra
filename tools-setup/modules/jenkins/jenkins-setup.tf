@@ -77,9 +77,3 @@ resource "aws_route_table_association" "private-subnet-association-for-jenkins" 
   route_table_id = var.private-route-table-id
 }
 
-
-#resource "aws_volume_attachment" "jenkins_volume_attachment" {
-  #device_name = "/dev/sdh"
-  #volume_id   = aws_ebs_volume.jenkins_volume.id
-  #instance_id = aws_instance.jenkins_instance.id
-#}

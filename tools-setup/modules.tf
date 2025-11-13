@@ -7,6 +7,7 @@
   region                      = var.region
   ami                         = var.ami
   availability_zone           = var.availability_zone
+  common_tags                 = local.common_tags
 }
 
 module "prometheus" {
@@ -19,9 +20,11 @@ module "prometheus" {
   instance_type                  = var.instance_type
   ami                            = var.ami
   availability_zone              = var.availability_zone
+  common_tags                    = local.common_tags
 }
 
 module "ecr" {
   source = "./modules/ECR"
   name   = var.ecr_repo_name
+  common_tags = local.common_tags
 }

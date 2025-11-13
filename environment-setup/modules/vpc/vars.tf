@@ -16,13 +16,6 @@ variable "availability-zone" {
 
 variable "common_tags" {
   type = map(string)
-  default = {
-    "CreatedBy"   = "Terraform"
-    "Project"     = "Birdwatching"
-    "Environment" = "dev-01"
-    "Repository"  = "https://github.com/Maars-Team/BirdwatchingIac"
-    "Module"      = "environment-setup"
-  }
 }
 
 variable "vpc-id" {

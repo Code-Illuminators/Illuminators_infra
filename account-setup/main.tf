@@ -1,17 +1,10 @@
 provider "aws" {
   region = var.region
-  default_tags {
-    tags = {
-      "CreatedBy"   = "Terraform"
-      "Project"     = "Birdwatching"
-      "Environment" = "${env}"
-      "Repository"  = "https://github.com/Maars-Team/BirdwatchingIac"
-      "Module"      = "account-setup"
-    }
-  }
 }
 
 terraform {
+  required_version = ">= 1.12.2"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"

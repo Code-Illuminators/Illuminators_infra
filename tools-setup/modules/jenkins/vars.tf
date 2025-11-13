@@ -25,13 +25,6 @@ variable "ami" {
 
 variable "common_tags" {
   type = map(string)
-  default = {
-    "CreatedBy"   = "Terraform"
-    "Project"     = "Birdwatching"
-    "Environment" = "stage-01"
-    "Repository"  = "https://github.com/Maars-Team/BirdwatchingIac"
-    "Module"      = "tools-setup"
-  }
 }
 
 variable "availability_zone" {
@@ -40,5 +33,6 @@ variable "availability_zone" {
 }
 
 variable "private-route-table-id" {
+  description = "ID of the private route table used for Prometheus instance networking"
   type        = string
 }
