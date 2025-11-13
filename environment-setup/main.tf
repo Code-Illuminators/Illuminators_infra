@@ -14,7 +14,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket       = "terraform-state-illuminati-test"
+    bucket       = "terraform-state-illuminati"
     region       = "us-east-1"
     key          = "dev-setup/environment.tfstate"
     encrypt      = true
