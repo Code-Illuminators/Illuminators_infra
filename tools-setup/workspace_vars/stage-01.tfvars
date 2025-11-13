@@ -1,0 +1,8 @@
+env                            = "stage-01"
+region                         = "us-east-1"
+availability_zone              = "us-east-1a"
+private_subnets_for_jenkins    = "10.0.4.0/24"
+private_subnets_for_prometheus = "10.0.6.0/24"
+instance_type                  = "t3.micro"
+ami                            = "ami-0f25d583f6cccd90c"
+ecr_repo_name                  = "birdwatching-app"

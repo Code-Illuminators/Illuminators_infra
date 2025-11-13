@@ -1,0 +1,27 @@
+ module "jenkins" {
+  source                      = "./modules/jenkins"
+  vpc_id                      = data.aws_vpc.account-vpc.id
+  private_subnets_for_jenkins = var.private_subnets_for_jenkins
+  private-route-table-id      = data.aws_route_table.private-route-table.id
+  env                         = var.env
+  region                      = var.region
+  ami                         = var.ami
+  availability_zone           = var.availability_zone
+}
+
+module "prometheus" {
+  source                         = "./modules/prometheus"
+  vpc_id                         = data.aws_vpc.account-vpc.id
+  private_subnets_for_prometheus = var.private_subnets_for_prometheus
+  private-route-table-id         = data.aws_route_table.private-route-table.id
+  env                            = var.env
+  region                         = var.region
+  instance_type                  = var.instance_type
+  ami                            = var.ami
+  availability_zone              = var.availability_zone
+}
+
+module "ecr" {
+  source = "./modules/ECR"
+  name   = var.ecr_repo_name
+}
