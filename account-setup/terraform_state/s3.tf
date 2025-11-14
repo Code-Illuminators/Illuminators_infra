@@ -9,7 +9,14 @@ resource "aws_s3_bucket" "terraform_state_logs" {
   bucket = "terraform-state-birdwatching-2025-logs"
 }
 
-# Політика, яка дозволяє сервісу логів писати в logs-бакет
+resource "aws_s3_bucket_public_access_block" "public-access-logs" {
+  bucket                  = aws_s3_bucket.terraform_state_logs.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 data "aws_iam_policy_document" "terraform_state_logs" {
   statement {
     sid    = "s3-log-delivery"
@@ -41,7 +48,7 @@ resource "aws_s3_bucket_logging" "terraform_state" {
 }
 
 resource "aws_s3_bucket_policy" "https-only" {
-  bucket = "terraform-state-birdwatching-2025"
+  bucket = aws_s3_bucket.terraform-state.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -55,8 +62,8 @@ resource "aws_s3_bucket_policy" "https-only" {
         }
         Action    = "s3:*"
         Resource = [
-          aws_s3_bucket.terraform-state-birdwatching-2025.arn,
-          "${aws_s3_bucket.terraform-state-birdwatching-2025.arn}/*",
+          aws_s3_bucket.terraform-state.arn,
+          "${aws_s3_bucket.terraform-state.arn}/*",
         ]
         Condition = {
           Bool = {

@@ -37,6 +37,7 @@ resource "aws_iam_instance_profile" "consul-profile" {
 }
 
 resource "aws_instance" "consul-instance" {
+  associate_public_ip_address = false
   ami                  = var.ami
   instance_type        = "t3.micro"
   subnet_id            = aws_subnet.private-subnets-for-consul.id

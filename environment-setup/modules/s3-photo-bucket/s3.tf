@@ -6,6 +6,15 @@ resource "aws_s3_bucket" "birdwatching_photo_bucket_logs" {
   bucket = "birdwatching-photo-logs-${var.env}"
 }
 
+resource "aws_s3_bucket_public_access_block" "public-access" {
+  bucket = aws_s3_bucket.birdwatching_photo_bucket_logs.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 data "aws_iam_policy_document" "birdwatching_photo_bucket_logs" {
   statement {
     sid    = "s3-log-delivery"
