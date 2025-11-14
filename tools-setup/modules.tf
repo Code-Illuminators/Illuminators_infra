@@ -25,6 +25,12 @@ module "prometheus" {
 
 module "ecr" {
   source = "./modules/ECR"
-  name   = var.ecr_repo_name
+
+  set_ecr = {
+    backend  = "illuminators_backend_ecr"
+    frontend = "illuminators_frontend_ecr"
+    service  = "illuminators_service_ecr"
+  }
+
   common_tags = local.common_tags
 }
