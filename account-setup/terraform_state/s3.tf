@@ -7,6 +7,7 @@ resource "aws_s3_bucket" "terraform-state" {
 
 resource "aws_s3_bucket" "terraform_state_logs" {
   bucket = "terraform-state-birdwatching-2025-logs"
+
 }
 
 resource "aws_s3_bucket_public_access_block" "public-access-logs" {
