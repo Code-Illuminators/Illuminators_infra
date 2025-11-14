@@ -78,6 +78,7 @@ resource "aws_security_group" "prometheus-sg" {
 }
 
 resource "aws_instance" "prometheus_instance" {
+  associate_public_ip_address = false
   ami                    = var.ami
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.private_subnet_prometheus.id

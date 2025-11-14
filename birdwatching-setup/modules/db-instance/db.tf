@@ -16,12 +16,14 @@ resource "aws_ebs_volume" "db-volume" {
   availability_zone = var.availability-zone
   size              = 1
   type              = "gp3"
+  encrypted         = true
   tags = merge(var.common_tags, {
     Name = "db-volume-${var.env}"
   })
 }
 
 resource "aws_instance" "db" {
+  associate_public_ip_address = false
   ami                         = var.ami_name
   instance_type               = var.instance-type
   vpc_security_group_ids      = [aws_security_group.db-security-group.id]

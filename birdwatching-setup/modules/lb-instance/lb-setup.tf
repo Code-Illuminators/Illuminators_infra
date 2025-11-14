@@ -33,6 +33,7 @@ resource "aws_route" "private-nat-route" {
 }
 
 resource "aws_instance" "loadbalancer" {
+  associate_public_ip_address = false
   ami                    = var.ami_name
   instance_type          = var.instance-type
   vpc_security_group_ids = [aws_security_group.load-balancer-security-group.id]

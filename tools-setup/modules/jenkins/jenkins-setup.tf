@@ -58,6 +58,7 @@ resource "aws_security_group" "jenkins_security_group" {
 }
 
 resource "aws_instance" "jenkins_instance" {
+  associate_public_ip_address = false
   ami                    = var.ami
   instance_type          = "c7i-flex.large"
   subnet_id              = aws_subnet.private_subnet_jenkins.id

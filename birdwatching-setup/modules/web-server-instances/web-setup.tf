@@ -13,6 +13,7 @@ resource "aws_route_table_association" "private-subnet-association-for-web" {
 }
 
 resource "aws_instance" "web" {
+  associate_public_ip_address = false
   ami                         = var.web_ami_name
   count                       = 2
   instance_type               = var.instance-type

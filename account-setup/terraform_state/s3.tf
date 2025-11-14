@@ -5,6 +5,69 @@ resource "aws_s3_bucket" "terraform-state" {
   }
 }
 
+resource "aws_s3_bucket" "terraform_state_logs" {
+  bucket = "terraform-state-birdwatching-2025-logs"
+}
+
+# Політика, яка дозволяє сервісу логів писати в logs-бакет
+data "aws_iam_policy_document" "terraform_state_logs" {
+  statement {
+    sid    = "s3-log-delivery"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["logging.s3.amazonaws.com"]
+    }
+
+    actions = ["s3:PutObject"]
+
+    resources = [
+      "${aws_s3_bucket.terraform_state_logs.arn}/*",
+    ]
+  }
+}
+
+resource "aws_s3_bucket_policy" "terraform_state_logs" {
+  bucket = aws_s3_bucket.terraform_state_logs.id
+  policy = data.aws_iam_policy_document.terraform_state_logs.json
+}
+
+resource "aws_s3_bucket_logging" "terraform_state" {
+  bucket = aws_s3_bucket.terraform-state.id
+
+  target_bucket = aws_s3_bucket.terraform_state_logs.id
+  target_prefix = "access-logs/"
+}
+
+resource "aws_s3_bucket_policy" "https-only" {
+  bucket = "terraform-state-birdwatching-2025"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Id      = "ExamplePolicy"
+    Statement = [
+      {
+        Sid       = "HTTPSOnly"
+        Effect    = "Deny"
+        Principal = {
+          "AWS": "*"
+        }
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.terraform-state-birdwatching-2025.arn,
+          "${aws_s3_bucket.terraform-state-birdwatching-2025.arn}/*",
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      },
+    ]
+  })
+}
+
 resource "aws_s3_bucket_versioning" "enabled" {
   bucket = aws_s3_bucket.terraform-state.id
   versioning_configuration {
