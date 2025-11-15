@@ -55,8 +55,8 @@ variable "availability_zone" {
 }
 
 variable "ecr_set" {
-  type        = map(string)
-  description = "set of ecr"
+  type        = list(string)
+  description = "set of ECRs for Jenkins' pushing docker images"
 }
 
 variable "project" {

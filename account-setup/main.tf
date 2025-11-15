@@ -5,7 +5,7 @@ provider "aws" {
     tags = {
       CreatedBy   = "Terraform"
       Project     = "Illuminators_app"
-      Environment = "Dev"
+      Environment = var.env
       Repository  = "github.com/Code-Illuminators/Illuminators_infra"
       Module      = "Infra"
     }

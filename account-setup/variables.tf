@@ -20,8 +20,9 @@ variable "ami" {
 }
 
 variable "jenkins_instance_type" {
-  description = "EC2 instance type for Jenkins"
+  description = "ec2 instance type for the Jenkins server"
   type        = string
+  default     = "c7i-flex.large"
 }
 
 variable "user_data" {
@@ -41,6 +42,6 @@ variable "project" {
 }
 
 variable "ecr_set" {
-  type        = map(string)
-  description = "set of ecr"
+  type        = list(string)
+  description = "set of ECRs for Jenkins' pushing docker images"
 }

@@ -71,7 +71,7 @@ resource "aws_security_group" "jenkins_sg" {
 }
 
 resource "aws_ecr_repository" "illuminators_ecr_set" {
-  for_each             = var.ecr_set
+  for_each             = toset(var.ecr_set)
   name                 = "${each.value}_${var.env}"
   image_tag_mutability = "MUTABLE"
 }
