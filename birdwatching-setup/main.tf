@@ -14,9 +14,9 @@ terraform {
 
   backend "s3" {
     bucket         = "terraform-state-birdwatching-2025"
-    key            = "environment-setup/terraform.tfstate"
+    key            = "birdwatching-setup/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
+    use_lockfile   = true
     encrypt        = true
   }
 

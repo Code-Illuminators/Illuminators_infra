@@ -1,0 +1,14 @@
+.PHONY: init plan apply destroy
+BIRD_ENV=stage-01
+init:
+	terraform init
+	terraform workspace select -or-create ${BIRD_ENV}
+
+plan: init
+	terraform plan -var-file=workspace_vars/${BIRD_ENV}.tfvars
+
+apply: init
+	terraform apply -var-file=workspace_vars/${BIRD_ENV}.tfvars
+
+destroy: init
+	terraform destroy -var-file=workspace_vars/${BIRD_ENV}.tfvars

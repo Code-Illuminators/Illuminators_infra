@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
 }
 
 terraform {
@@ -9,5 +9,4 @@ terraform {
       version = "6.14.1"
     }
   }
-
 }

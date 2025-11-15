@@ -1,10 +1,8 @@
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
 }
 
 terraform {
-  required_version = ">= 1.12.2"
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -14,7 +12,7 @@ terraform {
 
   backend "s3" {
     bucket         = "terraform-state-birdwatching-2025"
-    key            = "account-setup/terraform.tfstate"
+    key            = "account-setup/terraform-state/terraform.tfstate"
     region         = "us-east-1"
     use_lockfile   = true
     encrypt        = true
