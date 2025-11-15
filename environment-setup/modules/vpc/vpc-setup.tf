@@ -1,0 +1,73 @@
+resource "aws_subnet" "public_subnet_1" {
+  vpc_id                  = var.vpc_id
+  map_public_ip_on_launch = true
+  cidr_block              = var.public_subnet_cidr
+  availability_zone       = var.availability_zone
+
+  tags = merge(var.common_tags, {
+    Name = "public_subnet_${var.availability_zone}"
+  })
+}
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = var.vpc_id
+
+  tags = merge(var.common_tags, {
+    Name = "internet_gateway_${var.env}"
+  })
+}
+
+resource "aws_route_table" "public" {
+
+  route {
+    cidr_block = var.rt_pub_cidr
+    gateway_id = aws_internet_gateway.gw.id
+  }
+  vpc_id = var.vpc_id
+
+  tags = merge(var.common_tags, {
+    Name = "public_rt_${var.env}"
+  })
+}
+
+resource "aws_eip" "nat_eip" {
+  depends_on = [aws_internet_gateway.gw]
+  domain     = "vpc"
+
+  tags = merge(var.common_tags, {
+    Name = "nat_eip_${var.env}"
+  })
+}
+
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public_subnet_1.id
+
+  tags = merge(var.common_tags, {
+    Name = "nat_gw_${var.env}"
+  })
+}
+
+
+resource "aws_route_table" "private" {
+
+  route {
+    cidr_block     = var.rt_pv_cidr
+    nat_gateway_id = aws_nat_gateway.nat_gateway.id
+  }
+  vpc_id = var.vpc_id
+
+  tags = merge(var.common_tags, {
+    Name = "private_rt_${var.env}"
+  })
+}
+
+resource "aws_route_table_association" "pub_rt_association" {
+  subnet_id      = aws_subnet.public_subnet_1.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "pv_rt_association" {
+  subnet_id      = var.jenkins_subnet_id
+  route_table_id = aws_route_table.private.id
+}
