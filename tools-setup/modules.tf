@@ -30,7 +30,7 @@ module "ecr" {
     backend  = "illuminators_backend_ecr"
     frontend = "illuminators_frontend_ecr"
     service  = "illuminators_service_ecr"
-    consul   = "Illuminator_consul_ecr"
+    consul   = "illuminator_consul_ecr"
   }
 
   common_tags = local.common_tags
