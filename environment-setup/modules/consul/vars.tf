@@ -39,8 +39,8 @@ variable "common_tags" {
   default = {
     "CreatedBy"   = "Terraform"
     "Project"     = "Birdwatching"
-    "Environment" = "dev-01"
-    "Repository"  = "https://github.com/Maars-Team/BirdwatchingIac"
+    "Environment" = "stage-01"
+    "Repository"  = "https://github.com/Code-Illuminators/Illuminators_infra"
     "Module"      = "environment-setup"
   }
 }

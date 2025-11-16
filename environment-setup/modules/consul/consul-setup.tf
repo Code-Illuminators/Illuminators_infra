@@ -36,17 +36,17 @@ resource "aws_iam_instance_profile" "consul-profile" {
   role = aws_iam_role.consul-role.name
 }
 
-resource "aws_instance" "consul-instance" {
-  associate_public_ip_address = false
-  ami                  = var.ami
-  instance_type        = "t3.micro"
-  subnet_id            = aws_subnet.private-subnets-for-consul.id
-  iam_instance_profile = aws_iam_instance_profile.consul-profile.name
-  security_groups      = [aws_security_group.instance.id]
-  tags = merge(var.common_tags, {
-    Name = "consul-instance-${var.env}"
-  })
-}
+# resource "aws_instance" "consul-instance" {
+#   associate_public_ip_address = false
+#   ami                  = var.ami
+#   instance_type        = "t3.micro"
+#   subnet_id            = aws_subnet.private-subnets-for-consul.id
+#   iam_instance_profile = aws_iam_instance_profile.consul-profile.name
+#   security_groups      = [aws_security_group.instance.id]
+#   tags = merge(var.common_tags, {
+#     Name = "consul-instance-${var.env}"
+#   })
+# }
 
 resource "aws_security_group" "instance" {
   vpc_id = var.vpc-id
