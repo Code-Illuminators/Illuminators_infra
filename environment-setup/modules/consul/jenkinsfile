@@ -50,7 +50,7 @@ pipeline {
                 dir('environment-setup') {
                     script {
                         try {
-                            timeout(time: 5, unit: 'MINUTES') {
+                            timeout(time: 2, unit: 'MINUTES') {
                                 input message: "Approve Terraform Apply for environment: $TERRAFORM_ENV?", ok: "Yes, apply"
                             }
                             sh "make apply ENV=$TERRAFORM_ENV"
