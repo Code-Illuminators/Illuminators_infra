@@ -9,6 +9,11 @@ pipeline {
                     export GOSSIP_TOKEN=$(consul keygen)
                     envsubst < server.hcl.template > server.hcl
                     cat server.hcl
+                    mkdir -p certs
+                    cd certs
+                    consul tls ca create
+                    consul tls cert create -server dc1-server-consul-0
+                    cat consul-agent-ca.pem
                 '''
                  }
             }
