@@ -48,10 +48,18 @@ pipeline {
         stage('Terraform Apply (Manual Approval)') {
             steps {
                 dir('environment-setup') {
-                   
-                    input message: "Approve Terraform Apply for environment: $TERRAFORM_ENV?", ok: "Yes, apply"
-                    
-                    sh "make apply ENV=$TERRAFORM_ENV"
+                    script {
+                        try {
+                            timeout(time: 5, unit: 'MINUTES') {
+                                input message: "Approve Terraform Apply for environment: $TERRAFORM_ENV?", ok: "Yes, apply"
+                            }
+                            sh "make apply ENV=$TERRAFORM_ENV"
+                        } catch(err) {
+                    echo "Terraform Apply aborted: ${err}"
+                    currentBuild.result = 'ABORTED'
+                    error("Pipeline aborted by user")
+                }
+                    }
                 }
             }
         }
