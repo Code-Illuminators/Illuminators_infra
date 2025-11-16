@@ -1,22 +1,60 @@
 pipeline {
     agent any
+
+    parameters {
+        choice(
+            name: 'ENV',
+            choices: ['dev-01', 'stage-01', 'prod-01'],
+            description: 'Select target environment'
+        )
+    }
+
+    environment {
+        AWS_REGION = "us-east-1"
+        TERRAFORM_ENV = "${params.ENV ?: 'stage-01'}" 
+    }
+
     stages {
-        stage('Generate Consul Tokens') {
+
+        stage('Generate Consul Tokens & Certificates') {
             steps {
-                 dir("environment-setup/modules/consul") {
-                sh '''
-                    export CONSUL_BOOTSTRAP_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
-                    export GOSSIP_TOKEN=$(consul keygen)
-                    envsubst < server.hcl.template > server.hcl
-                    cat server.hcl
-                    mkdir -p certs
-                    cd certs
-                    consul tls ca create
-                    consul tls cert create -server dc1-server-consul-0
-                    cat consul-agent-ca.pem
-                '''
-                 }
+                dir("environment-setup/modules/consul") {
+                    sh '''
+                        echo "Generating Consul tokens for environment: $TERRAFORM_ENV"
+                        export CONSUL_BOOTSTRAP_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
+                        export GOSSIP_TOKEN=$(consul keygen)
+
+                        envsubst < server.hcl.template > server.hcl
+                        cat server.hcl
+                        rm -rf certs
+                        mkdir -p certs
+                        cd certs
+                        consul tls ca create
+                        consul tls cert create -server dc1-server-consul-0
+                        cat consul-agent-ca.pem
+                    '''
+                }
             }
         }
+
+        stage('Terraform Init & Plan') {
+            steps {
+                dir('environment-setup') {
+                    sh "make plan ENV=$TERRAFORM_ENV"
+                }
+            }
+        }
+
+        stage('Terraform Apply (Manual Approval)') {
+            steps {
+                dir('environment-setup') {
+                   
+                    input message: "Approve Terraform Apply for environment: $TERRAFORM_ENV?", ok: "Yes, apply"
+                    
+                    sh "make apply ENV=$TERRAFORM_ENV"
+                }
+            }
+        }
+
     }
 }
