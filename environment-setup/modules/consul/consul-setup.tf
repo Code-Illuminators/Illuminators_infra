@@ -1,17 +1,48 @@
-resource "aws_subnet" "private-subnets-for-consul" {
-  vpc_id            = var.vpc-id
-  # cidr_block        = var.private-subnets-for-consul
-  cidr_block        = var.private-subnet-a-cidr
-  availability_zone = var.availability-zone
-  tags = merge(var.common_tags, {
-    Name = "private-${var.availability-zone}-consul-${var.env}"
-  })
+resource "aws_subnet" "private_a" {
+  vpc_id                  = var.vpc-id
+  cidr_block              = var.private-subnet-a-cidr
+  availability_zone       = var.az-a
+  map_public_ip_on_launch = false
+  tags = merge(var.common_tags, { Name = "private-${var.az-a}-consul-${var.env}" })
 }
 
-resource "aws_route_table_association" "private-subnet-association-for-consul" {
-  subnet_id      = aws_subnet.private-subnets-for-consul.id
+resource "aws_subnet" "private_b" {
+  vpc_id                  = var.vpc-id
+  cidr_block              = var.private-subnet-b-cidr
+  availability_zone       = var.az-b
+  map_public_ip_on_launch = false
+  tags = merge(var.common_tags, { Name = "private-${var.az-b}-consul-${var.env}" })
+}
+
+resource "aws_subnet" "private_c" {
+  vpc_id                  = var.vpc-id
+  cidr_block              = var.private-subnet-c-cidr
+  availability_zone       = var.az-c
+  map_public_ip_on_launch = false
+  tags = merge(var.common_tags, { Name = "private-${var.az-c}-consul-${var.env}" })
+}
+
+
+resource "aws_route_table_association" "private-a-assoc" {
+  subnet_id      = aws_subnet.private_a.id
   route_table_id = var.private-route-id
 }
+
+resource "aws_route_table_association" "private-b-assoc" {
+  subnet_id      = aws_subnet.private_b.id
+  route_table_id = var.private-route-id
+}
+
+resource "aws_route_table_association" "private-c-assoc" {
+  subnet_id      = aws_subnet.private_c.id
+  route_table_id = var.private-route-id
+}
+
+
+# resource "aws_route_table_association" "private-subnet-association-for-consul" {
+#   subnet_id      = aws_subnet.private-subnets-for-consul.id
+#   route_table_id = var.private-route-id
+# }
 
 resource "aws_iam_role" "consul-role" {
   name = "consul-role-${var.env}"
