@@ -16,7 +16,6 @@ module "consul" {
   account-id = var.account-id
   repo       = "illuminators_consul_ecr"
   image_tag  = "latest"
-  secrets_prefix = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:consul"
   private-subnet-a-cidr = var.private-subnet-a-cidr
   private-subnet-b-cidr = var.private-subnet-b-cidr
   private-subnet-c-cidr = var.private-subnet-c-cidr

@@ -60,10 +60,7 @@ variable "image_tag" {
   description = "Docker image tag for Consul container"
 }
 
-variable "secrets_prefix" {
-  type        = string
-  
-}
+
 
 variable "private-subnet-a-cidr" {
   type        = string
