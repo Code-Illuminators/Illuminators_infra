@@ -25,7 +25,6 @@ pipeline {
                         export GOSSIP_TOKEN=$(consul keygen)
 
                         envsubst < server.hcl.template > server.hcl
-                        cat server.hcl
                         rm -rf certs
                         mkdir -p certs
                         cd certs

@@ -1,6 +1,7 @@
 resource "aws_subnet" "private-subnets-for-consul" {
   vpc_id            = var.vpc-id
-  cidr_block        = var.private-subnets-for-consul
+  # cidr_block        = var.private-subnets-for-consul
+  cidr_block        = var.private-subnet-a-cidr
   availability_zone = var.availability-zone
   tags = merge(var.common_tags, {
     Name = "private-${var.availability-zone}-consul-${var.env}"

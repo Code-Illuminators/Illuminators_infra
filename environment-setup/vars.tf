@@ -8,10 +8,10 @@ variable "env" {
   type        = string
 }
 
-variable "private-subnets-for-consul" {
-  description = "CIDR block for consul-subnet"
-  type        = string
-}
+# variable "private-subnets-for-consul" {
+#   description = "CIDR block for consul-subnet"
+#   type        = string
+# }
 
 variable "availability-zone" {
   description = "Availability zone for subnets"
@@ -31,3 +31,34 @@ data "aws_vpc" "account-vpc" {
   }
 }
 
+variable "private-subnet-a-cidr" {
+  type        = string
+  description = "CIDR block for private subnet A"
+}
+
+variable "private-subnet-b-cidr" {
+  type        = string
+  description = "CIDR block for private subnet B"
+}
+
+variable "private-subnet-c-cidr" {
+  type        = string
+  description = "CIDR block for private subnet C"
+}
+
+variable "az-a" {
+  type        = string
+}
+
+variable "az-b" {
+  type        = string
+}
+
+variable "az-c" {
+  type        = string
+}
+
+variable "account-id" {
+  type        = string
+  description = "AWS Account ID"
+}
