@@ -3,7 +3,7 @@ resource "aws_subnet" "private_a" {
   cidr_block              = var.private-subnet-a-cidr
   availability_zone       = var.az-a
   map_public_ip_on_launch = false
-  tags = merge(var.common_tags, { Name = "private-${var.az-a}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${var.az-a}-consul-${var.env}" })
 }
 
 resource "aws_subnet" "private_b" {
@@ -11,7 +11,7 @@ resource "aws_subnet" "private_b" {
   cidr_block              = var.private-subnet-b-cidr
   availability_zone       = var.az-b
   map_public_ip_on_launch = false
-  tags = merge(var.common_tags, { Name = "private-${var.az-b}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${var.az-b}-consul-${var.env}" })
 }
 
 resource "aws_subnet" "private_c" {
@@ -19,7 +19,7 @@ resource "aws_subnet" "private_c" {
   cidr_block              = var.private-subnet-c-cidr
   availability_zone       = var.az-c
   map_public_ip_on_launch = false
-  tags = merge(var.common_tags, { Name = "private-${var.az-c}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${var.az-c}-consul-${var.env}" })
 }
 
 
@@ -37,13 +37,6 @@ resource "aws_route_table_association" "private-c-assoc" {
   subnet_id      = aws_subnet.private_c.id
   route_table_id = var.private-route-id
 }
-
-
-# resource "aws_route_table_association" "private-subnet-association-for-consul" {
-#   subnet_id      = aws_subnet.private-subnets-for-consul.id
-#   route_table_id = var.private-route-id
-# }
-
 
 resource "aws_security_group" "consul_sg" {
   name   = "consul-sg"
@@ -81,9 +74,9 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ecs-tasks.amazonaws.com" },
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -100,9 +93,9 @@ resource "aws_iam_role" "consul_task_role" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ecs-tasks.amazonaws.com" },
-      Action = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -167,22 +160,22 @@ resource "aws_service_discovery_private_dns_namespace" "consul_ns" {
 # ECS Service with Cloud Map / Route 53???
 
 resource "aws_ecs_service" "consul_service" {
-  name            = "consul-server-service"
-  cluster         = aws_ecs_cluster.consul_cluster.id
-  task_definition = aws_ecs_task_definition.consul_task.arn
-  desired_count   = 3
-  launch_type     = "FARGATE"
+  name                   = "consul-server-service"
+  cluster                = aws_ecs_cluster.consul_cluster.id
+  task_definition        = aws_ecs_task_definition.consul_task.arn
+  desired_count          = 3
+  launch_type            = "FARGATE"
   enable_execute_command = true
 
-network_configuration {
-  subnets = [
-    aws_subnet.private_a.id,
-    aws_subnet.private_b.id,
-    aws_subnet.private_c.id
-  ]
-  assign_public_ip = false
-  security_groups  = [aws_security_group.consul_sg.id]
-}
+  network_configuration {
+    subnets = [
+      aws_subnet.private_a.id,
+      aws_subnet.private_b.id,
+      aws_subnet.private_c.id
+    ]
+    assign_public_ip = false
+    security_groups  = [aws_security_group.consul_sg.id]
+  }
 
 
 
@@ -204,7 +197,7 @@ network_configuration {
 resource "aws_service_discovery_service" "consul_service_discovery" {
   name = "${var.env}-consul-server-service"
   dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.consul_ns.id
+    namespace_id   = aws_service_discovery_private_dns_namespace.consul_ns.id
     routing_policy = "MULTIVALUE"
     dns_records {
       type = "A"

@@ -63,18 +63,18 @@ variable "image_tag" {
 
 
 variable "private-subnet-a-cidr" {
-  type        = string
-  
+  type = string
+
 }
 
 variable "private-subnet-b-cidr" {
-  type        = string
-  
+  type = string
+
 }
 
 variable "private-subnet-c-cidr" {
-  type        = string
-  
+  type = string
+
 }
 
 variable "az-a" {
