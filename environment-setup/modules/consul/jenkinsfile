@@ -33,7 +33,7 @@ pipeline {
  stage('Upload secrets') {
     steps {
         script {
-
+dir("environment-setup/") {
             def consulSecrets = [
                 "consul-agent-ca"         : "modules/consul/certs/consul-agent-ca.pem",
                 "consul-agent-ca-key"     : "modules/consul/certs/consul-agent-ca-key.pem",
@@ -45,6 +45,7 @@ pipeline {
             consulSecrets.each { key, filePath ->
 
                 sh """
+                ls -al
                 aws secretsmanager create-secret \
                     --name "${params.ENV}/consul/${key}" \
                     --tags Key=Service,Value=consul \
@@ -59,5 +60,5 @@ pipeline {
             }
         }
     }
-}
+}}
        }}
