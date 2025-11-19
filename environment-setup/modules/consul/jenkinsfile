@@ -30,41 +30,34 @@ pipeline {
                 }
             }
         }
- stage('Upload secrets to AWS SM') {
-            steps {
-                // dir("environment-setup/modules/consul/certs") 
-                script {
-                    
-                    def consulSecrets = [
-                            "consul-agent-ca"         : "modules/consul/certs/consul-agent-ca.pem"
-                            "consul-agent-ca-key"     : "modules/consul/certs/consul-agent-ca-key.pem"
-                            "dc1-server-consul-0"     : "modules/consul/certs/dc1-server-consul-0.pem"
-                            "dc1-server-consul-0-key" : "modules/consul/certs/dc1-server-consul-0-key.pem"
-                            "server-hcl"              : "modules/consul/server.hcl"
-                             ]
+ stage('Upload secrets') {
+    steps {
+        script {
 
-                    consulSecrets.each { key, filePath ->
+            def consulSecrets = [
+                "consul-agent-ca"         : "modules/consul/certs/consul-agent-ca.pem",
+                "consul-agent-ca-key"     : "modules/consul/certs/consul-agent-ca-key.pem",
+                "dc1-server-consul-0"     : "modules/consul/certs/dc1-server-consul-0.pem",
+                "dc1-server-consul-0-key" : "modules/consul/certs/dc1-server-consul-0-key.pem",
+                "server-hcl"              : "modules/consul/server.hcl"
+            ]
 
-                        
-                        sh """
-                        aws secretsmanager create-secret \
-                            --name "${params.ENV}/consul/${key}" \
-                            --tags Key=Service,Value=consul+"${params.ENV}" \
-                            || true
-                        """
+            consulSecrets.each { key, filePath ->
 
-                        if (fileExists(filePath)) {
-                            
-                            sh """
-                            aws secretsmanager put-secret-value \
-                                --secret-id "${params.ENV}/consul/${key}" \
-                                --secret-string file://${filePath}
-                            """
-                        } else {
-                            echo "Skipping ${key} — file ${filePath} does not exist."
-                        }
-                    }
-                }
+                sh """
+                aws secretsmanager create-secret \
+                    --name "${params.ENV}/consul/${key}" \
+                    --tags Key=Service,Value=consul \
+                    || true
+                """
+
+                sh """
+                aws secretsmanager put-secret-value \
+                    --secret-id "${params.ENV}/consul/${key}" \
+                    --secret-string file://${filePath}
+                """
             }
-        }}
+        }
+    }
 }
+       }}
