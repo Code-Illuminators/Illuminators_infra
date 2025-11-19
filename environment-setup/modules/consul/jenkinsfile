@@ -9,11 +9,6 @@ pipeline {
         )
     }
 
-    environment {
-        AWS_REGION = "us-east-1"
-        TERRAFORM_ENV = "${params.ENV ?: 'stage-01'}" 
-    }
-
     stages {
 
         stage('Generate Consul Tokens & Certificates') {
@@ -35,33 +30,40 @@ pipeline {
                 }
             }
         }
-
-        stage('Terraform Init & Plan') {
+ stage('Upload secrets to AWS SM') {
             steps {
-                dir('environment-setup') {
-                    sh "make plan ENV=$TERRAFORM_ENV"
-                }
-            }
-        }
+                // dir("environment-setup/modules/consul/certs") 
+                script {
+                    
+                    def consulSecrets = [
+                            "consul-agent-ca"         = "modules/consul/certs/consul-agent-ca.pem"
+                            "consul-agent-ca-key"     = "modules/consul/certs/consul-agent-ca-key.pem"
+                            "dc1-server-consul-0"     = "modules/consul/certs/dc1-server-consul-0.pem"
+                            "dc1-server-consul-0-key" = "modules/consul/certs/dc1-server-consul-0-key.pem"
+                            "server-hcl"              = "modules/consul/server.hcl"
+                             ]
 
-        stage('Terraform Apply (Manual Approval)') {
-            steps {
-                dir('environment-setup') {
-                    script {
-                        try {
-                            timeout(time: 2, unit: 'MINUTES') {
-                                input message: "Approve Terraform Apply for environment: $TERRAFORM_ENV?", ok: "Yes, apply"
-                            }
-                            sh "make apply ENV=$TERRAFORM_ENV"
-                        } catch(err) {
-                    echo "Terraform Apply aborted: ${err}"
-                    currentBuild.result = 'ABORTED'
-                    error("Pipeline aborted by user")
-                }
+                    consulSecrets.each { key, filePath ->
+
+                        
+                        sh """
+                        aws secretsmanager create-secret \
+                            --name "${params.ENV}/consul/${key}" \
+                            --tags Key=Service,Value=consul+"${params.ENV}" \
+                            || true
+                        """
+
+                        if (fileExists(filePath)) {
+                            
+                            sh """
+                            aws secretsmanager put-secret-value \
+                                --secret-id "${params.ENV}/consul/${key}" \
+                                --secret-string file://${filePath}
+                            """
+                        } else {
+                            echo "Skipping ${key} — file ${filePath} does not exist."
+                        }
                     }
                 }
             }
-        }
-
-    }
-}
+        }}
