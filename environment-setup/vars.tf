@@ -25,6 +25,11 @@ variable "ami" {
   default     = "ami-038b732f1ef375eb5"
 }
 
+variable "aws_account_id" {
+  type = string
+  description = "id of aws account for defining deployment for particular account"
+}
+
 data "aws_vpc" "account-vpc" {
   tags = {
     Name = "BirdwatchingProject"

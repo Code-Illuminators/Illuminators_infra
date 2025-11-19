@@ -13,3 +13,7 @@ variable "username" {
   type        = list(string)
 }
 
+variable "aws_account_id" {
+  type = string
+  description = "id of aws account for defining deployment for particular account"
+}

@@ -13,10 +13,20 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-birdwatching-2025"
-    key            = "account-setup/terraform.tfstate"
-    region         = "us-east-1"
-    use_lockfile   = true
-    encrypt        = true
+    # bucket         = "terraform-state-birdwatching-2025-dev-01"
+    # key            = "account-setup/terraform-state/terraform.tfstate"
+    # region         = "us-east-1"
+    # profile        = "dev_account"
+    # use_lockfile   = true
+    # encrypt        = true
+  }
+}
+
+// added
+provider "aws" {
+  region = var.region
+  alias = "account"
+  assume_role {
+    role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
   }
 }

@@ -1,13 +1,14 @@
 resource "aws_s3_bucket" "terraform-state" {
-  bucket = "terraform-state-birdwatching-2025"
+  bucket = "terraform-state-birdwatching-2025-dev-01"
   lifecycle {
     prevent_destroy = true
   }
+  provider = aws.account
 }
 
 resource "aws_s3_bucket" "terraform_state_logs" {
-  bucket = "terraform-state-birdwatching-2025-logs"
-
+  bucket = "terraform-state-birdwatching-2025-logs-dev-01"
+  provider = aws.account
 }
 
 resource "aws_s3_bucket_public_access_block" "public-access-logs" {
@@ -16,6 +17,7 @@ resource "aws_s3_bucket_public_access_block" "public-access-logs" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+  provider = aws.account
 }
 
 data "aws_iam_policy_document" "terraform_state_logs" {
@@ -39,6 +41,7 @@ data "aws_iam_policy_document" "terraform_state_logs" {
 resource "aws_s3_bucket_policy" "terraform_state_logs" {
   bucket = aws_s3_bucket.terraform_state_logs.id
   policy = data.aws_iam_policy_document.terraform_state_logs.json
+  provider = aws.account
 }
 
 resource "aws_s3_bucket_logging" "terraform_state" {
@@ -46,10 +49,12 @@ resource "aws_s3_bucket_logging" "terraform_state" {
 
   target_bucket = aws_s3_bucket.terraform_state_logs.id
   target_prefix = "access-logs/"
+  provider = aws.account
 }
 
 resource "aws_s3_bucket_policy" "https-only" {
   bucket = aws_s3_bucket.terraform-state.id
+  provider = aws.account
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -81,9 +86,11 @@ resource "aws_s3_bucket_versioning" "enabled" {
   versioning_configuration {
     status = "Enabled"
   }
+  provider = aws.account
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "terraform-state-encryption" {
+  provider = aws.account
   bucket = aws_s3_bucket.terraform-state.id
   rule {
     apply_server_side_encryption_by_default {
@@ -98,9 +105,11 @@ resource "aws_s3_bucket_public_access_block" "public-access" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+  provider = aws.account
 }
 
 resource "aws_dynamodb_table" "terraform-locks" {
+  provider = aws.account
   name         = "terraform-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
