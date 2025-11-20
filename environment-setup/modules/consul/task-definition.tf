@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "consul_task" {
         { name = "SERVER_HCL", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-hcl" }
       ]
       healthCheck = {
-        command     = ["CMD-SHELL", "curl -f http://localhost:8500/v1/status/leader || exit 1"]
+        command     = ["curl -f --cacert /consul/certs/consul-agent-ca.pem https://localhost:8501/v1/status/leader || exit 1"]
         interval    = 30
         timeout     = 5
         retries     = 3
