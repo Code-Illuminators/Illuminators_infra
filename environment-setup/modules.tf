@@ -5,9 +5,6 @@ module "environment-vpc" {
   availability-zone = var.availability-zone
   region            = var.region
   common_tags       = local.common_tags
-    providers = {
-    aws = aws.account
-  }
 }
 
 # module "consul" {
@@ -21,7 +18,7 @@ module "environment-vpc" {
 #   vpc-id                     = data.aws_vpc.account-vpc.id
 # }
 
-# module "s3-photo-bucket" {
-#   source = "./modules/s3-photo-bucket"
-#   env    = var.env
-# }
+module "s3-photo-bucket" {
+  source = "./modules/s3-photo-bucket"
+  env    = var.env
+}

@@ -1,5 +1,8 @@
 provider "aws" {
   region = var.region
+  assume_role {
+    role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
+  }
 }
 
 terraform {
@@ -19,14 +22,5 @@ terraform {
     # profile        = "dev_account"
     # use_lockfile   = true
     # encrypt        = true
-  }
-}
-
-// added
-provider "aws" {
-  region = var.region
-  alias = "account"
-  assume_role {
-    role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
   }
 }

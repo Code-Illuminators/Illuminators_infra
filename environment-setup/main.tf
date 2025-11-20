@@ -1,12 +1,5 @@
 provider "aws" {
   region = var.region
-  # profile = "stage_account"
-}
-
-provider "aws" {
-  region = var.region
-  # profile = "stage_account"
-  alias = "account"
   assume_role {
     role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
   }
@@ -23,11 +16,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-birdwatching-2025"
-    key            = "environment-setup/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-locks"
-    encrypt        = true
+    # bucket         = "terraform-state-birdwatching-2025"
+    # key            = "environment-setup/terraform.tfstate"
+    # region         = "us-east-1"
+    # dynamodb_table = "terraform-locks"
+    # encrypt        = true
   }
 
 }

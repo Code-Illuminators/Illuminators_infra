@@ -33,6 +33,27 @@ resource "aws_iam_role" "jenkins_role" {
   })
 }
 
+resource "aws_iam_role_policy" "jenkins_assume_roles_policy" {
+  name = "jenkins-assume-roles-${var.env}"
+  role = aws_iam_role.jenkins_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "sts:AssumeRole",
+        Resource = [
+          "arn:aws:iam::235194330448:role/terraform-deployment-role-dev-01",
+          "arn:aws:iam::037490753541:role/terraform-deployment-role-stage-01",
+          # "arn:aws:iam::037490753541:role/terraform-deployment-role-prod-01"
+        ]
+      }
+    ]
+  })
+}
+
+
 resource "aws_iam_role_policy_attachment" "jenkins_ssm" {
   role       = aws_iam_role.jenkins_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
