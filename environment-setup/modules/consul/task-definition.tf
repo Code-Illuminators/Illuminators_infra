@@ -34,11 +34,11 @@ resource "aws_ecs_task_definition" "consul_task" {
       ]
 
       secrets = [
-        { name = "CONSUL_AGENT_CA", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/consul-agent-ca" },
-        { name = "CONSUL_AGENT_CA_KEY", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/consul-agent-ca-key" },
-        { name = "SERVER_CONSUL", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-consul" },
-        { name = "SERVER_CONSUL_KEY", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-consul-key" },
-        { name = "SERVER_HCL", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-hcl" }
+        { name = "CONSUL_AGENT_CA", valueFrom = aws_secretsmanager_secret.consul_secrets["consul-agent-ca"].arn },
+        { name = "CONSUL_AGENT_CA_KEY", valueFrom = aws_secretsmanager_secret.consul_secrets["consul-agent-ca-key"].arn },
+        { name = "SERVER_CONSUL", valueFrom = aws_secretsmanager_secret.consul_secrets["server-consul"].arn},
+        { name = "SERVER_CONSUL_KEY", valueFrom = aws_secretsmanager_secret.consul_secrets["server-consul-key"].arn },
+        { name = "SERVER_HCL", valueFrom = aws_secretsmanager_secret.consul_secrets["server-hcl"].arn }
       ]
       healthCheck = {
         command     = ["CMD-SHELL","curl -f --cacert /consul/certs/consul-agent-ca.pem https://localhost:8501/v1/status/leader || exit 1"]
