@@ -4,8 +4,8 @@ set -e
 
 echo "$CONSUL_AGENT_CA" > /consul/certs/consul-agent-ca.pem
 echo "$CONSUL_AGENT_CA_KEY" > /consul/certs/consul-agent-ca-key.pem
-echo "$SERVER_CONSUL" > /consul/certs/server-consul.pem
-echo "$SERVER_CONSUL_KEY" > /consul/certs/server-consul-key.pem
+echo "$SERVER_CONSUL" > /consul/certs/$CONSUL_DATACENTER-server-consul-0.pem
+echo "$SERVER_CONSUL_KEY" > /consul/certs/$CONSUL_DATACENTER-server-consul-0-key.pem
 echo "$SERVER_HCL" > /consul/config/server.hcl
 
 CONSUL_BIND_IP=$(hostname -i | awk '{print $1}')

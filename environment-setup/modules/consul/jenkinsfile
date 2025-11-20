@@ -8,7 +8,10 @@ pipeline {
             description: 'Select target environment'
         )
     }
-
+        environment {
+       
+        CONSUL_DATACENTER = "${params.ENV}-dc" 
+    }
     stages {
 
         stage('Generate Consul Tokens & Certificates') {
@@ -18,13 +21,14 @@ pipeline {
                         echo "Generating Consul tokens for environment: $TERRAFORM_ENV"
                         export CONSUL_BOOTSTRAP_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
                         export GOSSIP_TOKEN=$(consul keygen)
+                        export CONSUL_DATACENTER="${params.ENV}-dc"
 
                         envsubst < server.hcl.template > server.hcl
                         rm -rf certs
                         mkdir -p certs
                         cd certs
                         consul tls ca create
-                        consul tls cert create -server server-consul
+                        consul tls cert create -server -dc "$CONSUL_DATACENTER" server-consul
                        
                     '''
                 }
@@ -37,8 +41,8 @@ dir("environment-setup/") {
             def consulSecrets = [
                 "consul-agent-ca"         : "modules/consul/certs/consul-agent-ca.pem",
                 "consul-agent-ca-key"     : "modules/consul/certs/consul-agent-ca-key.pem",
-                "server-consul"           : "modules/consul/certs/server-consul.pem",
-                "server-consul-key"       : "modules/consul/certs/server-consul-key.pem",
+                "server-consul"           : "modules/consul/certs/$CONSUL_DATACENTER-server-consul-0.pem",
+                "server-consul-key"       : "modules/consul/certs/$CONSUL_DATACENTER-server-consul-0-key.pem",
                 "server-hcl"              : "modules/consul/server.hcl"
             ]
 
