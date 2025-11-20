@@ -23,21 +23,25 @@ resource "aws_ecs_task_definition" "consul_task" {
         { containerPort = 8302, hostPort = 8302, protocol = "udp" }
       ]
       environment = [
-        { name = "CONSUL_RETRY_JOIN", value = "${var.env}-consul-server-service.consul-cluster.local"
-        }
-
-
+{
+    name  = "CONSUL_RETRY_JOIN"
+    value = "${var.env}-consul-server-service.consul-cluster.local"
+  },
+  {
+    name  = "CONSUL_DATACENTER"
+    value = "${var.env}-dc"
+  }
       ]
 
       secrets = [
         { name = "CONSUL_AGENT_CA", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/consul-agent-ca" },
         { name = "CONSUL_AGENT_CA_KEY", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/consul-agent-ca-key" },
-        { name = "DC1_SERVER_CONSUL_0", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/dc1-server-consul-0" },
-        { name = "DC1_SERVER_CONSUL_0_KEY", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/dc1-server-consul-0-key" },
+        { name = "SERVER_CONSUL", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-consul" },
+        { name = "SERVER_CONSUL_KEY", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-consul-key" },
         { name = "SERVER_HCL", valueFrom = "arn:aws:secretsmanager:${var.region}:${var.account-id}:secret:${var.env}/consul/server-hcl" }
       ]
       healthCheck = {
-        command     = ["curl -f --cacert /consul/certs/consul-agent-ca.pem https://localhost:8501/v1/status/leader || exit 1"]
+        command     = ["CMD-SHELL","curl -f --cacert /consul/certs/consul-agent-ca.pem https://localhost:8501/v1/status/leader || exit 1"]
         interval    = 30
         timeout     = 5
         retries     = 3
