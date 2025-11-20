@@ -11,4 +11,13 @@ echo "$SERVER_HCL" > /consul/config/server.hcl
 CONSUL_BIND_IP=$(hostname -i | awk '{print $1}')
 
 
-exec consul agent -server -bootstrap-expect=3 -ui -bind="$CONSUL_BIND_IP" -client=0.0.0.0 -config-dir=/consul/config -data-dir=/consul/data -datacenter="$CONSUL_DATACENTER" -client=0.0.0.0 -retry-join="$CONSUL_RETRY_JOIN"
+exec consul agent \
+  -server \
+  -bootstrap-expect=3 \
+  -ui \
+  -bind="$CONSUL_BIND_IP" \
+  -client=0.0.0.0 \
+  -config-dir=/consul/config \
+  -data-dir=/consul/data \
+  -datacenter="$CONSUL_DATACENTER" \
+  -retry-join="$CONSUL_RETRY_JOIN"

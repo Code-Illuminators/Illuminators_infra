@@ -21,7 +21,7 @@ pipeline {
                         echo "Generating Consul tokens for environment: $TERRAFORM_ENV"
                         export CONSUL_BOOTSTRAP_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
                         export GOSSIP_TOKEN=$(consul keygen)
-                        export CONSUL_DATACENTER="${params.ENV}-dc"
+                       
 
                         envsubst < server.hcl.template > server.hcl
                         rm -rf certs
