@@ -28,6 +28,7 @@ terraform {
 
 
 data "terraform_remote_state" "account-vpc" {
+  provider = aws.stage
   backend = "s3"
   config = {
     bucket = "terraform-state-birdwatching-2025"
