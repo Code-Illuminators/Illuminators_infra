@@ -8,6 +8,7 @@ module "lb" {
   availability-zone     = var.availability-zone
   dns-name              = var.dns-name
   common_tags           = local.common_tags
+  ssm_instance_profile_name = module.ssm_ec2_role.instance_profile_name
   #data var block
   vpc-cidr-block            = data.aws_vpc.account-vpc.cidr_block
   public-route-table-id     = data.aws_route_table.public-route-table.id
@@ -27,6 +28,7 @@ module "db" {
   private-subnets-for-web = var.private-subnets-for-web
   availability-zone       = var.availability-zone
   common_tags             = local.common_tags
+  ssm_instance_profile_name = module.ssm_ec2_role.instance_profile_name
   #data var block
   vpc-cidr-block         = data.aws_vpc.account-vpc.cidr_block
   public-jenkins-key     = data.aws_key_pair.jenkins-key-pair.key_name
@@ -49,4 +51,11 @@ module "web-servers-instances" {
   photosaver_profile     = data.aws_iam_instance_profile.photosaver_profile.name
   private-route-table-id = data.aws_route_table.private-route-table.id
   vpc-id                 = data.aws_vpc.account-vpc.id
+}
+
+module "ssm_ec2_role" {
+  source      = "./modules/ssm-ec2-role"
+  region      = var.region
+  env         = var.env
+  common_tags = local.common_tags
 }

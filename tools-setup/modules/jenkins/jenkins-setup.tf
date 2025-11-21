@@ -78,3 +78,35 @@ resource "aws_route_table_association" "private-subnet-association-for-jenkins" 
   route_table_id = var.private-route-table-id
 }
 
+resource "aws_s3_bucket" "ssm_bucket" {
+  bucket = "birdwatching-ssm-${var.env}"
+}
+
+resource "aws_iam_policy" "ssm_bucket_access" {
+  name        = "ssm-bucket-access-${var.env}"
+  description = "Access for SSM session temp files"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket"
+        ],
+        Resource = [
+          aws_s3_bucket.ssm_bucket.arn,
+          "${aws_s3_bucket.ssm_bucket.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_ssm_bucket_access" {
+  role       = aws_iam_role.jenkins_role.name
+  policy_arn = aws_iam_policy.ssm_bucket_access.arn
+}
+
