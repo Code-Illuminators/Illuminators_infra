@@ -30,7 +30,7 @@ data "terraform_remote_state" "account-vpc" {
   backend = "s3"
   config = {
     bucket = "terraform-state-birdwatching-2025-${var.env}"
-    key    = "env:/${var.env}/account-setup/terraform.tfstate"
+    key    = "env:/${var.env}/account-setup/terraform-state/terraform.tfstate"
     region = "us-east-1"
   }
 }
