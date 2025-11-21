@@ -63,33 +63,3 @@ variable "account-id" {
   description = "AWS Account ID"
 }
 
-
-variable "cluster-name" {
-  description = "The name of the EKS cluster"
-  type        = string
-}
-
-variable "private-eks-subnet-a" {
-  description = "CIDR block for private EKS subnet A"
-  type        = string
-}
-
-variable "private-eks-subnet-b" {
-  description = "CIDR block for private EKS subnet B"
-  type        = string
-}
-
-variable "public-eks-subnet-a" {
-  description = "CIDR block for public EKS subnet A"
-  type        = string
-}
-
-variable "public-eks-subnet-b" {
-  description = "CIDR block for public EKS subnet B"
-  type        = string
-}
-
-variable "eks-k8s-version" {
-  description = "The Kubernetes version for the EKS cluster"
-  type        = string
-}
