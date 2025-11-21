@@ -1,8 +1,8 @@
 provider "aws" {
   region = var.region
-  assume_role {
-    role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
-  }
+  # assume_role {
+  #   role_arn = "arn:aws:iam::${var.aws_account_id}:role/terraform-deployment-role-${var.env}"
+  # }
 }
 
 terraform {
