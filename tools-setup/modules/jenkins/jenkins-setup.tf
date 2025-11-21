@@ -152,6 +152,15 @@ resource "aws_s3_bucket" "ssm_logs_bucket" {
   tags = var.common_tags
 }
 
+resource "aws_s3_bucket_public_access_block" "ssm_logs_bucket_public_access_block" {
+  bucket = aws_s3_bucket.ssm_logs_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 data "aws_iam_policy_document" "ssm_logs_bucket" {
   statement {
     sid     = "s3-log-delivery"
