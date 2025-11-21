@@ -14,13 +14,12 @@ pipeline {
             steps {
                 git branch: 'CI-118-implement-possibility-to-deploy-resources-depending-on-which-account-it-needs',
                     url: 'git@github.com:Code-Illuminators/Illuminators_infra.git',
-                    credentialsId: 'jenkins-ssh-key'
+                    credentialsId: 'github_ssh'
             }
         }
 
         stage('Assuming role') {
             steps {
-                step {
                     script {
                         def account_id_map = [
                             'dev-01': '235194330448',
@@ -30,13 +29,13 @@ pipeline {
 
                         def account_id = account_id_map[params.ENV]
 
-                        withAWS(roleAccount: account_id, role: "terraform-deployment-role-${params.ENV}") {
-                        
-                            sh "make plan BIRD_ENV=${params.ENV}"
-                    }
-
+                        dir('environment-setup') {
+                            withAWS(roleAccount: account_id, role: "terraform-deployment-role-${params.ENV}") {
+                                sh "pwd"
+                                sh "cd environmet-setup"
+                                sh "make plan BIRD_ENV=${params.ENV}"
+                            }
                         }
-
 
                     }
                 }

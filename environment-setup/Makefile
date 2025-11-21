@@ -3,7 +3,7 @@
 BIRD_ENV=dev-01
 
 init:
-	terraform init -backend-config="./backends/${BIRD_ENV}.tfbackend" -reconfigure
+	terraform init -backend-config="./backends/${BIRD_ENV}.tfbackend"
 	terraform workspace select -or-create ${BIRD_ENV}
 
 plan: init
