@@ -58,6 +58,7 @@ variable "instance-type" {
 }
 
 variable "ssm_instance_profile_name" {
+  description = "Profile name for ec2 instances"
   type = string
 }
 
