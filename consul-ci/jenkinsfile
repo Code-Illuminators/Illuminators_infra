@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'ENV',
+            choices: ['stage-01', 'prod-01','dev-01'],
+            description: 'Select target environment'
+        )
+    }
+        environment {
+         CONSUL_DATACENTER = "${params.ENV}-dc" 
+    }
+    stages {
+
+        stage('Generate Consul Tokens & Certificates') {
+            steps {
+                dir("consul-ci/") {
+                    sh '''
+                        echo "Generating Consul tokens for environment: $TERRAFORM_ENV"
+                        export CONSUL_BOOTSTRAP_TOKEN=$(python3 -c "import uuid; print(uuid.uuid4())")
+                        export GOSSIP_TOKEN=$(consul keygen)
+                    
+
+                        envsubst < server.hcl.template > server.hcl
+                        rm -rf certs
+                        mkdir -p certs
+                        cd certs
+                        consul tls ca create
+                        consul tls cert create -server -dc "$CONSUL_DATACENTER" server-consul
+                       
+                    '''
+                }
+            }
+        }
+    stage('Upload secrets') {
+        steps {
+            script {
+                 dir("consul-ci/") {
+                    def consulSecrets = [
+                    "consul-agent-ca"         : "certs/consul-agent-ca.pem",
+                    "consul-agent-ca-key"     : "certs/consul-agent-ca-key.pem",
+                    "server-consul"           : "certs/$CONSUL_DATACENTER-server-consul-0.pem",
+                    "server-consul-key"       : "certs/$CONSUL_DATACENTER-server-consul-0-key.pem",
+                    "server-hcl"              : "server.hcl"
+                    ]
+
+                consulSecrets.each { key, filePath ->
+
+                    sh """
+                    aws secretsmanager put-secret-value \
+                        --secret-id "${params.ENV}/consul/${key}" \
+                        --secret-string file://${filePath}
+                    """
+                }
+            }
+        }
+    }} }}

@@ -58,7 +58,7 @@ resource "aws_s3_bucket_policy" "birdwatching_photo_bucket_https_only" {
   bucket = aws_s3_bucket.birdwatching_photo_bucket.id
 
   policy = jsonencode({
-    Version   = "2012-10-17"
+    Version = "2012-10-17"
     Statement = [
       {
         Sid       = "DenyInsecureTransport"
