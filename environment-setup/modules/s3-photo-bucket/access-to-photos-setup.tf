@@ -14,7 +14,7 @@ resource "aws_iam_role" "photo-saving-role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "photosaver_ssm" {
+resource "aws_iam_role_policy_attachment" "photosaver_s3" {
   role       = aws_iam_role.photo-saving-role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
