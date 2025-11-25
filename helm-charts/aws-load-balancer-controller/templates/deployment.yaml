@@ -19,47 +19,47 @@ spec:
         app.kubernetes.io/name: aws-load-balancer-controller
     spec:
       containers:
-      - args:
-        - --cluster-name={{ .Values.clusterName }}
-        - --ingress-class=alb
-        - --aws-vpc-id={{ .Values.vpcId }}
-        - --aws-region={{ .Values.region }}
-        image: public.ecr.aws/eks/aws-load-balancer-controller:v2.14.1
-        livenessProbe:
-          failureThreshold: 2
-          httpGet:
-            path: /healthz
-            port: 61779
-            scheme: HTTP
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
-        name: controller
-        ports:
-        - containerPort: 9443
-          name: webhook-server
-          protocol: TCP
-        resources:
-          limits:
-            cpu: 200m
-            memory: 500Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-        volumeMounts:
-        - mountPath: /tmp/k8s-webhook-server/serving-certs
-          name: cert
-          readOnly: true
+        - args:
+            - --cluster-name={{ .Values.clusterName }}
+            - --ingress-class=alb
+            - --aws-vpc-id={{ .Values.vpcId }}
+            - --aws-region={{ .Values.region }}
+          image: public.ecr.aws/eks/aws-load-balancer-controller:v2.14.1
+          livenessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /healthz
+              port: 61779
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          name: controller
+          ports:
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 200m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+          volumeMounts:
+            - mountPath: /tmp/k8s-webhook-server/serving-certs
+              name: cert
+              readOnly: true
       priorityClassName: system-cluster-critical
       securityContext:
         fsGroup: 1337
       serviceAccountName: aws-load-balancer-controller
       terminationGracePeriodSeconds: 10
       volumes:
-      - name: cert
-        secret:
-          defaultMode: 420
-          secretName: aws-load-balancer-webhook-tls
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: aws-load-balancer-webhook-tls

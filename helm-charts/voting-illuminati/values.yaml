@@ -29,7 +29,6 @@ resources: {}
 
 volumes: []
 
-
 volumeMounts: []
 
 nodeSelector: {}

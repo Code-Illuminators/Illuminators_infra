@@ -7,8 +7,8 @@ metadata:
   namespace: kube-system
 spec:
   dnsNames:
-  - aws-load-balancer-webhook-service.kube-system.svc
-  - aws-load-balancer-webhook-service.kube-system.svc.cluster.local
+    - aws-load-balancer-webhook-service.kube-system.svc
+    - aws-load-balancer-webhook-service.kube-system.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: aws-load-balancer-selfsigned-issuer

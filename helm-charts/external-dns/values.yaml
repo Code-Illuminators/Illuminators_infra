@@ -1,4 +1,4 @@
-namespace: kube-system        
+namespace: kube-system
 serviceAccountName: external-dns
 image:
   repository: registry.k8s.io/external-dns/external-dns

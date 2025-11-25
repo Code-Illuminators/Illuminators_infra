@@ -1,4 +1,3 @@
-
 image:
   repository: 037490753541.dkr.ecr.us-east-1.amazonaws.com/illuminators_sender_ecr
   pullPolicy: Always

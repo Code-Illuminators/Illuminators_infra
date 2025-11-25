@@ -9,6 +9,6 @@ roleRef:
   kind: ClusterRole
   name: aws-load-balancer-controller-role
 subjects:
-- kind: ServiceAccount
-  name: aws-load-balancer-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: aws-load-balancer-controller
+    namespace: kube-system
