@@ -56,5 +56,59 @@ variable "aws-load-balancer-controller-chart" {
 variable "ingress-class-chart" {
   description = "The ingress class helm chart path"
   type        = string
+}
 
+variable "smtp-host" {
+  description = "SMTP host of the mail server used for sending email notifications"
+  type        = string
+}
+
+variable "smtp-user" {
+  default = "Username used to authenticate with the SMTP server"
+  type    = string
+}
+
+variable "smtp-pass" {
+  description = "Password used to authenticate with the SMTP server"
+  type        = string
+}
+
+variable "internal-service-token" {
+  description = "Token used for internal communication between services"
+  type        = string
+}
+
+variable "users-api-url" {
+  description = "URL of the API endpoint used to fetch user data"
+  type        = string
+}
+
+variable "password-url" {
+  description = "URL of the API endpoint used to reset and set password"
+  type        = string
+}
+
+variable "sender-chart" {
+  description = "The sender helm chart path"
+  type        = string
+}
+
+variable "voting-chart" {
+  description = "The voting helm chart path"
+  type        = string
+}
+
+variable "django-secret-key" {
+  description = "Secret key for django"
+  type        = string
+}
+
+variable "voting-service-url" {
+  description = "URL of the API endpoint used to send votes"
+  type        = string
+}
+
+variable "allowed-hosts" {
+  description = "Allowed hosts for backend"
+  type        = string
 }

@@ -59,14 +59,6 @@ variable "public-eks-subnet-b" {
   type        = string
 }
 
-variable "az-a" {
-  type = string
-}
-
-variable "az-b" {
-  type = string
-}
-
 variable "eks-k8s-version" {
   description = "The Kubernetes version for the EKS cluster"
   type        = string
