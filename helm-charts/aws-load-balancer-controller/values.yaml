@@ -1,0 +1,3 @@
+clusterName: illuminati-cluster
+vpcId: ""
+region: "us-east-1"

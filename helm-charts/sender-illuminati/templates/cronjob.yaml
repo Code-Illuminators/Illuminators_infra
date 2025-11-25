@@ -1,0 +1,81 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "sender-illuminati.fullname" . }}
+  labels:
+    {{- include "sender-illuminati.labels" . | nindent 4 }}
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 500
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          labels:
+            {{- include "sender-illuminati.labels" . | nindent 12 }}
+            {{- with .Values.podLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        spec:
+          restartPolicy: Never
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "sender-illuminati.serviceAccountName" . }}
+          {{- with .Values.podSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            env:
+                - name: SMTP_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: SMTP_HOST
+                - name: SMTP_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: SMTP_USER 
+                - name: SMTP_PASS
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: SMTP_PASS
+                - name: INTERNAL_SERVICE_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: INTERNAL_SERVICE_TOKEN
+                - name: USERS_API_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: USERS_API_URL
+                - name: PASSWORD_SET_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.serviceCred.secretName }}
+                      key: PASSWORD_SET_URL

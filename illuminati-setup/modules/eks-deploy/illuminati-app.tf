@@ -12,6 +12,10 @@ resource "helm_release" "frontend" {
     {
       name  = "image.repository"
       value = "${var.account-id}.dkr.ecr.${var.region}.amazonaws.com/illuminators_frontend_ecr"
+    },
+    {
+      name  = "ingress.certificate-arn"
+      value = aws_acm_certificate.frontend.arn
   }]
 }
 
