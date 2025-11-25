@@ -12,7 +12,7 @@ fullnameOverride: ""
 backendPort: 8000
 serviceAccount:
   create: true
-  automount: true
+  automount: false
   annotations: {}
   name: "frontend-illuminati"
 
