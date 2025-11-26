@@ -8,10 +8,6 @@ variable "region" {
   type        = string
 }
 
-# variable "ami" {
-#   description = "Machine Image that provides the software necessary to configure and launch an EC2 instance"
-#   type        = string
-# }
 
 variable "availability-zone" {
   description = "Availability zone for subnets"
@@ -24,10 +20,6 @@ variable "private-route-id" {
   type        = string
 }
 
-# variable "private-subnets-for-consul" {
-#   description = "CIDR block for consul-subnet"
-#   type        = string
-# }
 
 variable "vpc-id" {
   description = "The VPC ID where subnet will be created"
@@ -64,27 +56,17 @@ variable "image_tag" {
 
 variable "private-subnet-a-cidr" {
   type = string
+  description = "CIDR block for private subnet a"
 
 }
 
 variable "private-subnet-b-cidr" {
   type = string
-
+description = "CIDR block for private subnet b"
 }
 
 variable "private-subnet-c-cidr" {
   type = string
-
+description = "CIDR block for private subnet c"
 }
 
-variable "az-a" {
-  type = string
-}
-
-variable "az-b" {
-  type = string
-}
-
-variable "az-c" {
-  type = string
-}

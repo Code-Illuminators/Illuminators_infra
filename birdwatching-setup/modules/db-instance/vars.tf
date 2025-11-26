@@ -57,6 +57,11 @@ variable "instance-type" {
   type        = string
 }
 
+variable "ssm_instance_profile_name" {
+  description = "Profile name for ec2 instances"
+  type = string
+}
+
 data "aws_subnet" "jenkins-subnet" {
   tags = {
     Name = "private-${var.availability-zone}-jenkins"

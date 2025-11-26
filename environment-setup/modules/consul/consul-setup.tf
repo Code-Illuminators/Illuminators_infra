@@ -1,25 +1,33 @@
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+locals {
+  azs = slice(data.aws_availability_zones.available.names, 0, 3)
+}
+
 resource "aws_subnet" "private_a" {
   vpc_id                  = var.vpc-id
   cidr_block              = var.private-subnet-a-cidr
-  availability_zone       = var.az-a
+  availability_zone       = local.azs[0]
   map_public_ip_on_launch = false
-  tags                    = merge(var.common_tags, { Name = "private-${var.az-a}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${local.azs[0]}-consul-${var.env}" })
 }
 
 resource "aws_subnet" "private_b" {
   vpc_id                  = var.vpc-id
   cidr_block              = var.private-subnet-b-cidr
-  availability_zone       = var.az-b
+  availability_zone       = local.azs[1]
   map_public_ip_on_launch = false
-  tags                    = merge(var.common_tags, { Name = "private-${var.az-b}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${local.azs[1]}-consul-${var.env}" })
 }
 
 resource "aws_subnet" "private_c" {
   vpc_id                  = var.vpc-id
   cidr_block              = var.private-subnet-c-cidr
-  availability_zone       = var.az-c
+  availability_zone       = local.azs[2]
   map_public_ip_on_launch = false
-  tags                    = merge(var.common_tags, { Name = "private-${var.az-c}-consul-${var.env}" })
+  tags                    = merge(var.common_tags, { Name = "private-${local.azs[2]}-consul-${var.env}" })
 }
 
 
@@ -157,7 +165,7 @@ resource "aws_service_discovery_private_dns_namespace" "consul_ns" {
 }
 
 
-# ECS Service with Cloud Map / Route 53???
+# ECS Service with Cloud Map
 
 resource "aws_ecs_service" "consul_service" {
   name                   = "consul-server-service"

@@ -29,7 +29,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir("environment-setup/modules/consul") {
+                dir("consul-runtime") {
                     sh '''
                     docker build -t $REPO .
                     '''
@@ -39,7 +39,7 @@ pipeline {
 
         stage('Tag and Push Image') {
             steps {
-                dir("environment-setup/modules/consul") {
+                dir("consul-runtime/") {
                     sh '''
                     docker tag $REPO:latest $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO:$IMAGE_TAG
                     docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$REPO:$IMAGE_TAG

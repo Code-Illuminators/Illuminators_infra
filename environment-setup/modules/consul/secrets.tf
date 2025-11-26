@@ -7,10 +7,3 @@ resource "aws_secretsmanager_secret" "consul_secrets" {
     Service = "consul"
   })
 }
-
-resource "aws_secretsmanager_secret_version" "consul_secrets_content" {
-  for_each = local.consul_secrets_files
-
-  secret_id     = aws_secretsmanager_secret.consul_secrets[each.key].id
-  secret_string = file(each.value)
-}

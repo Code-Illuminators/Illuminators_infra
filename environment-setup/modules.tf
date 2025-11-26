@@ -7,6 +7,22 @@ module "environment-vpc" {
   common_tags       = local.common_tags
 }
 
+module "consul" {
+  source                = "./modules/consul/"
+  env                   = var.env
+  region                = var.region
+  private-route-id      = module.environment-vpc.private-route-table-id
+  vpc-id                = data.aws_vpc.account-vpc.id
+  account-id            = var.account-id
+  repo                  = "illuminators_consul_ecr"
+  image_tag             = "latest"
+  private-subnet-a-cidr = var.private-subnet-a-cidr
+  private-subnet-b-cidr = var.private-subnet-b-cidr
+  private-subnet-c-cidr = var.private-subnet-c-cidr
+
+}
+
+
 module "s3-photo-bucket" {
   source = "./modules/s3-photo-bucket"
   env    = var.env
@@ -26,3 +42,4 @@ module "eks-setup" {
   private-route-table-id = module.environment-vpc.private-route-table-id
   public-route-table-id  = module.environment-vpc.public-route-table-id
 }
+

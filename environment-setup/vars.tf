@@ -31,6 +31,26 @@ data "aws_vpc" "account-vpc" {
   }
 }
 
+variable "private-subnet-a-cidr" {
+  type        = string
+  description = "CIDR block for private subnet A"
+}
+
+variable "private-subnet-b-cidr" {
+  type        = string
+  description = "CIDR block for private subnet B"
+}
+
+variable "private-subnet-c-cidr" {
+  type        = string
+  description = "CIDR block for private subnet C"
+}
+
+variable "account-id" {
+  type        = string
+  description = "AWS Account ID"
+}
+
 variable "cluster-name" {
   description = "The name of the EKS cluster"
   type        = string
