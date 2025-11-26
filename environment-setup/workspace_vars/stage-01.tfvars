@@ -1,7 +1,7 @@
 env               = "stage-01"
 region            = "us-east-1"
 availability-zone = "us-east-1a"
-#private-subnets-for-consul = "10.0.7.0/24"
+
 account-id = "037490753541"
 
 #private-subnets-for-consul

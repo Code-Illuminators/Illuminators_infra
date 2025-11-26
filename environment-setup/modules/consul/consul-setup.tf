@@ -157,7 +157,7 @@ resource "aws_service_discovery_private_dns_namespace" "consul_ns" {
 }
 
 
-# ECS Service with Cloud Map / Route 53???
+# ECS Service with Cloud Map
 
 resource "aws_ecs_service" "consul_service" {
   name                   = "consul-server-service"

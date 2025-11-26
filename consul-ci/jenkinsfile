@@ -25,10 +25,9 @@ pipeline {
                         envsubst < server.hcl.template > server.hcl
                         rm -rf certs
                         mkdir -p certs
-                        cd certs
                         consul tls ca create
                         consul tls cert create -server -dc "$CONSUL_DATACENTER" server-consul
-                       
+                        mv *.pem certs
                     '''
                 }
             }
