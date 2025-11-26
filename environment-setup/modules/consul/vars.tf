@@ -69,14 +69,3 @@ variable "private-subnet-c-cidr" {
 
 }
 
-variable "az-a" {
-  type = string
-}
-
-variable "az-b" {
-  type = string
-}
-
-variable "az-c" {
-  type = string
-}

@@ -19,12 +19,12 @@ module "consul" {
   private-subnet-a-cidr = var.private-subnet-a-cidr
   private-subnet-b-cidr = var.private-subnet-b-cidr
   private-subnet-c-cidr = var.private-subnet-c-cidr
-  az-a                  = var.az-a
-  az-b                  = var.az-b
-  az-c                  = var.az-c
+
 }
 
 module "s3-photo-bucket" {
   source = "./modules/s3-photo-bucket"
   env    = var.env
 }
+
+
