@@ -8,10 +8,6 @@ variable "region" {
   type        = string
 }
 
-variable "ami" {
-  description = "Machine Image that provides the software necessary to configure and launch an EC2 instance"
-  type        = string
-}
 
 variable "availability-zone" {
   description = "Availability zone for subnets"
@@ -24,10 +20,6 @@ variable "private-route-id" {
   type        = string
 }
 
-variable "private-subnets-for-consul" {
-  description = "CIDR block for consul-subnet"
-  type        = string
-}
 
 variable "vpc-id" {
   description = "The VPC ID where subnet will be created"
@@ -39,8 +31,42 @@ variable "common_tags" {
   default = {
     "CreatedBy"   = "Terraform"
     "Project"     = "Birdwatching"
-    "Environment" = "dev-01"
-    "Repository"  = "https://github.com/Maars-Team/BirdwatchingIac"
+    "Environment" = "stage-01"
+    "Repository"  = "https://github.com/Code-Illuminators/Illuminators_infra"
     "Module"      = "environment-setup"
   }
 }
+
+variable "account-id" {
+  type        = string
+  description = "AWS Account ID"
+}
+
+variable "repo" {
+  type        = string
+  description = "ECR repository name"
+}
+
+variable "image_tag" {
+  type        = string
+  description = "Docker image tag for Consul container"
+}
+
+
+
+variable "private-subnet-a-cidr" {
+  type = string
+  description = "CIDR block for private subnet a"
+
+}
+
+variable "private-subnet-b-cidr" {
+  type = string
+description = "CIDR block for private subnet b"
+}
+
+variable "private-subnet-c-cidr" {
+  type = string
+description = "CIDR block for private subnet c"
+}
+

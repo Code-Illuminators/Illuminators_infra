@@ -23,3 +23,8 @@ resource "aws_iam_instance_profile" "photo-saving-profile" {
   name = "photosaver-profile"
   role = aws_iam_role.photo-saving-role.name
 }
+
+resource "aws_iam_role_policy_attachment" "photosaver_ssm" {
+  role       = aws_iam_role.photo-saving-role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
