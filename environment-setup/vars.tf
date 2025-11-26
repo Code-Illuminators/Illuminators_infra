@@ -8,10 +8,10 @@ variable "env" {
   type        = string
 }
 
-variable "private-subnets-for-consul" {
-  description = "CIDR block for consul-subnet"
-  type        = string
-}
+# variable "private-subnets-for-consul" {
+#   description = "CIDR block for consul-subnet"
+#   type        = string
+# }
 
 variable "availability-zone" {
   description = "Availability zone for subnets"
@@ -31,3 +31,54 @@ data "aws_vpc" "account-vpc" {
   }
 }
 
+variable "private-subnet-a-cidr" {
+  type        = string
+  description = "CIDR block for private subnet A"
+}
+
+variable "private-subnet-b-cidr" {
+  type        = string
+  description = "CIDR block for private subnet B"
+}
+
+variable "private-subnet-c-cidr" {
+  type        = string
+  description = "CIDR block for private subnet C"
+}
+
+
+
+variable "account-id" {
+  type        = string
+  description = "AWS Account ID"
+}
+
+variable "cluster-name" {
+  description = "The name of the EKS cluster"
+  type        = string
+}
+
+variable "private-eks-subnet-a" {
+  description = "CIDR block for private EKS subnet A"
+  type        = string
+}
+
+variable "private-eks-subnet-b" {
+  description = "CIDR block for private EKS subnet B"
+  type        = string
+}
+
+variable "public-eks-subnet-a" {
+  description = "CIDR block for public EKS subnet A"
+  type        = string
+}
+
+variable "public-eks-subnet-b" {
+  description = "CIDR block for public EKS subnet B"
+  type        = string
+}
+
+variable "eks-k8s-version" {
+  description = "The Kubernetes version for the EKS cluster"
+  type        = string
+}
