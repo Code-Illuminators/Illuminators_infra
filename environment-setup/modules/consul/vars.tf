@@ -56,16 +56,17 @@ variable "image_tag" {
 
 variable "private-subnet-a-cidr" {
   type = string
+  description = "CIDR block for private subnet a"
 
 }
 
 variable "private-subnet-b-cidr" {
   type = string
-
+description = "CIDR block for private subnet b"
 }
 
 variable "private-subnet-c-cidr" {
   type = string
-
+description = "CIDR block for private subnet c"
 }
 
