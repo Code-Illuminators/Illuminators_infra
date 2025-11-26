@@ -1,13 +1,12 @@
 resource "aws_s3_bucket" "terraform-state" {
-  bucket = "terraform-state-birdwatching-2025"
+  bucket = "terraform-state-birdwatching-2025-${var.env}"
   lifecycle {
     prevent_destroy = true
   }
 }
 
 resource "aws_s3_bucket" "terraform_state_logs" {
-  bucket = "terraform-state-birdwatching-2025-logs"
-
+  bucket = "terraform-state-birdwatching-2025-logs-${var.env}"
 }
 
 resource "aws_s3_bucket_public_access_block" "public-access-logs" {
@@ -56,12 +55,12 @@ resource "aws_s3_bucket_policy" "https-only" {
     Id      = "ExamplePolicy"
     Statement = [
       {
-        Sid       = "HTTPSOnly"
-        Effect    = "Deny"
+        Sid    = "HTTPSOnly"
+        Effect = "Deny"
         Principal = {
-          "AWS": "*"
+          "AWS" : "*"
         }
-        Action    = "s3:*"
+        Action = "s3:*"
         Resource = [
           aws_s3_bucket.terraform-state.arn,
           "${aws_s3_bucket.terraform-state.arn}/*",

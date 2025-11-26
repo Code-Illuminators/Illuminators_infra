@@ -2,6 +2,7 @@ module "iam" {
   source   = "./modules/iam"
   username = var.username
   region   = var.region
+  env      = var.env
 }
 
 module "vpc" {

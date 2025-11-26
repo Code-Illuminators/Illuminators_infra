@@ -2,6 +2,12 @@ provider "aws" {
   region = var.region
 }
 
+provider "aws" {
+  profile = "stage_account"
+  alias   = "stage_account"
+  region  = var.region
+}
+
 terraform {
   required_version = ">= 1.12.2"
 
@@ -13,10 +19,5 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-birdwatching-2025"
-    key            = "account-setup/terraform.tfstate"
-    region         = "us-east-1"
-    use_lockfile   = true
-    encrypt        = true
   }
 }

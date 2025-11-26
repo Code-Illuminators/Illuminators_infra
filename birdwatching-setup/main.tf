@@ -13,13 +13,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraform-state-birdwatching-2025"
-    key            = "birdwatching-setup/terraform.tfstate"
-    region         = "us-east-1"
-    use_lockfile   = true
-    encrypt        = true
   }
-
 }
 
 
@@ -27,7 +21,7 @@ data "terraform_remote_state" "account-vpc" {
   backend = "s3"
   config = {
     bucket = "terraform-state-birdwatching-2025"
-    key    = "env:/stage-01/account-setup/terraform.tfstate"
+    key    = "env:/${var.env}/account-setup/terraform.tfstate"
     region = "us-east-1"
   }
 }

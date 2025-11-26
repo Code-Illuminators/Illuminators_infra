@@ -8,7 +8,7 @@ public-eks-subnet-b  = "10.0.17.0/24"
 cluster-name         = "Illuminati-cluster"
 eks-k8s-version      = "1.31"
 
-account-id = "235194330448"
+account-id = "123456789999" // aws account id example
 
 #private-subnets-for-consul
 private-subnet-a-cidr = "10.0.11.0/24"

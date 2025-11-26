@@ -1,4 +1,4 @@
-bucket       = "terraform-state-birdwatching-2025-stage-01"
+bucket       = "terraform-state-birdwatching-2025-dev-01"
 key          = "portal-setup/terraform.tfstate"
 region       = "us-east-1"
 use_lockfile = true
