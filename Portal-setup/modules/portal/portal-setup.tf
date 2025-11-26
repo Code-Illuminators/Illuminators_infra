@@ -80,6 +80,15 @@ resource "aws_s3_bucket" "portal_assets" {
   })
 }
 
+resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
+  bucket = aws_s3_bucket.example.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_iam_policy" "portal_bucket_access_policy" {
   name        = "portal-s3-bucket-policy-${var.env}"
   description = "Allows the portal instance to manage files in the assets bucket"
