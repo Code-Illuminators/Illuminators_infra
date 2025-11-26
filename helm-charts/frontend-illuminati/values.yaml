@@ -1,0 +1,65 @@
+namespace: illuminati
+replicaCount: 1
+image:
+  repository: ""
+  pullPolicy: Always
+  tag: ""
+
+hostedZoneName: ""
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+backendPort: 8000
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  name: "frontend-illuminati"
+
+podAnnotations: {}
+
+podLabels:
+  app: frontend
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: NodePort
+  port: 80
+
+ingress:
+  enabled: true
+  className: "alb"
+  certificate-arn: ""
+  hosts:
+    - host: illuminaati.pp.ua
+      paths:
+        - path: /assets
+          pathType: Prefix
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
+
+volumes:
+  - name: nginx-config
+    configMap:
+      name: illuminati-nginx-config
+volumeMounts:
+  - name: nginx-config
+    mountPath: /etc/nginx/conf.d/frontend-nginx.conf
+    subPath: frontend-nginx.conf
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,9 +1,9 @@
 locals {
   common_tags = {
     CreatedBy   = "Terraform"
-    Project     = "Birdwatching"
+    Project     = "Illuminati"
     Environment = var.env
     Repository  = "https://github.com/Code-Illuminators/Illuminators_infra"
-    Module      = "environment-setup"
+    Module      = "illuminati-setup"
   }
 }

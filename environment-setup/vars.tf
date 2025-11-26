@@ -46,8 +46,6 @@ variable "private-subnet-c-cidr" {
   description = "CIDR block for private subnet C"
 }
 
-
-
 variable "account-id" {
   type        = string
   description = "AWS Account ID"

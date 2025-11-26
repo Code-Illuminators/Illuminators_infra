@@ -1,0 +1,50 @@
+module "eks-node-group" {
+  source             = "./modules/eks-node-groups"
+  env                = var.env
+  cluster-name       = var.cluster-name
+  node-instance-type = var.node-instance-type
+  region             = var.region
+}
+module "rds" {
+  source              = "./modules/rds"
+  env                 = var.env
+  region              = var.region
+  private-db-subnet-a = var.private-db-subnet-a
+  private-db-subnet-b = var.private-db-subnet-b
+  availability-zone-a = var.availability-zone-a
+  availability-zone-b = var.availability-zone-b
+  vpc-id              = data.aws_vpc.account-vpc.id
+  db-password         = var.db-password
+  db-user             = var.db-user
+  db-name             = var.db-name
+  db-port             = var.db-port
+  cluster-name        = var.cluster-name
+  common_tags         = local.common_tags
+}
+
+module "eks-deploy" {
+  source                             = "./modules/eks-deploy"
+  env                                = var.env
+  region                             = var.region
+  cluster-name                       = var.cluster-name
+  external-dns-chart                 = var.external-dns-chart
+  backend-chart                      = var.backend-chart
+  frontend-chart                     = var.frontend-chart
+  db-secret-name                     = module.rds.db-secret-name
+  domain-name                        = var.domain-name
+  account-id                         = var.account-id
+  vpc-id                             = data.aws_vpc.account-vpc.id
+  aws-load-balancer-controller-chart = var.aws-load-balancer-controller-chart
+  ingress-class-chart                = var.ingress-class-chart
+  smtp-host                          = var.smtp-host
+  smtp-pass                          = var.smtp-pass
+  smtp-user                          = var.smtp-user
+  sender-chart                       = var.sender-chart
+  internal-service-token             = var.internal-service-token
+  users-api-url                      = var.users-api-url
+  password-url                       = var.password-url
+  voting-chart                       = var.voting-chart
+  voting-service-url                 = var.voting-service-url
+  allowed-hosts                      = var.allowed-hosts
+  django-secret-key                  = var.django-secret-key
+}
