@@ -80,8 +80,8 @@ resource "aws_s3_bucket" "portal_assets" {
   })
 }
 
-resource "aws_s3_bucket_public_access_block" "example-public-access-block" {
-  bucket = aws_s3_bucket.example.id
+resource "aws_s3_bucket_public_access_block" "portal_assets_access_block" {
+  bucket = aws_s3_bucket.portal_assets.id
 
   block_public_acls       = true
   block_public_policy     = true
