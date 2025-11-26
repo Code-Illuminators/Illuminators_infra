@@ -22,7 +22,6 @@ module "consul" {
 
 }
 
-
 module "s3-photo-bucket" {
   source = "./modules/s3-photo-bucket"
   env    = var.env
