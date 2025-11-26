@@ -66,3 +66,8 @@ variable "dns-name" {
   description = "domain name for our app"
   type        = string
 }
+
+variable "ssm_instance_profile_name" {
+  description = "Profile name for ec2 instances"
+  type = string
+}
