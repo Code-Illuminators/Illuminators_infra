@@ -8,3 +8,7 @@ variable "region" {
   type        = string
 }
 
+variable "env" {
+  type = string
+  description = "name of the environment (dev-01, stage, prod)"
+}

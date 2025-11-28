@@ -33,6 +33,26 @@ resource "aws_iam_role" "jenkins_role" {
   })
 }
 
+resource "aws_iam_role_policy" "jenkins_assume_roles_policy" {
+  name = "jenkins-assume-roles-${var.env}"
+  role = aws_iam_role.jenkins_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = "sts:AssumeRole",
+        Resource = [
+          "arn:aws:iam::235194330448:role/terraform-deployment-role-dev-01",
+          "arn:aws:iam::037490753541:role/terraform-deployment-role-stage-01",
+          "arn:aws:iam::037490753541:role/terraform-deployment-role-prod-01"
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_iam_role_policy_attachment" "jenkins_ssm" {
   role       = aws_iam_role.jenkins_role.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
@@ -59,11 +79,11 @@ resource "aws_security_group" "jenkins_security_group" {
 
 resource "aws_instance" "jenkins_instance" {
   associate_public_ip_address = false
-  ami                    = var.ami
-  instance_type          = "c7i-flex.large"
-  subnet_id              = aws_subnet.private_subnet_jenkins.id
-  vpc_security_group_ids = [aws_security_group.jenkins_security_group.id]
-  iam_instance_profile   = aws_iam_instance_profile.jenkins_profile.name
+  ami                         = var.ami
+  instance_type               = "c7i-flex.large"
+  subnet_id                   = aws_subnet.private_subnet_jenkins.id
+  vpc_security_group_ids      = [aws_security_group.jenkins_security_group.id]
+  iam_instance_profile        = aws_iam_instance_profile.jenkins_profile.name
 
   key_name = aws_key_pair.jenkins-key-pair.key_name
 
@@ -98,10 +118,10 @@ resource "aws_s3_bucket_policy" "ssm_bucket_https_only" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid    = "DenyInsecureTransport"
-        Effect = "Deny"
+        Sid       = "DenyInsecureTransport"
+        Effect    = "Deny"
         Principal = "*"
-        Action = "s3:*"
+        Action    = "s3:*"
         Resource = [
           aws_s3_bucket.ssm_bucket.arn,
           "${aws_s3_bucket.ssm_bucket.arn}/*"
@@ -163,8 +183,8 @@ resource "aws_s3_bucket_public_access_block" "ssm_logs_bucket_public_access_bloc
 
 data "aws_iam_policy_document" "ssm_logs_bucket" {
   statement {
-    sid     = "s3-log-delivery"
-    effect  = "Allow"
+    sid    = "s3-log-delivery"
+    effect = "Allow"
 
     principals {
       type        = "Service"
