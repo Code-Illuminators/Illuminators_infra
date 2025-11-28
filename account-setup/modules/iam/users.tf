@@ -29,9 +29,9 @@ resource "aws_iam_access_key" "access-key" {
   user  = aws_iam_user.team[count.index].name
 }
 
-data "aws_caller_identity" "stage_account" {
-  provider = aws.stage_account
-}
+# data "aws_caller_identity" "stage_account" {
+#   provider = aws.stage_account
+# } //uncomment it when creates dev/prod acc after stage
 
 data "aws_caller_identity" "current" {}
 
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "terraform_deployment_role_dev_01" {
     principals {
       type = "AWS"
       identifiers = concat(
-        ["arn:aws:iam::${data.aws_caller_identity.stage_account.account_id}:role/jenkins-role-stage-01"],
+        # ["arn:aws:iam::${data.aws_caller_identity.stage_account.account_id}:role/jenkins-role-stage-01"],
         [for user in aws_iam_user.team :
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${user.name}"]
       )

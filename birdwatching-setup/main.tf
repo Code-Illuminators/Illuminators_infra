@@ -15,13 +15,3 @@ terraform {
   backend "s3" {
   }
 }
-
-
-data "terraform_remote_state" "account-vpc" {
-  backend = "s3"
-  config = {
-    bucket = "terraform-state-birdwatching-2025"
-    key    = "env:/${var.env}/account-setup/terraform.tfstate"
-    region = "us-east-1"
-  }
-}

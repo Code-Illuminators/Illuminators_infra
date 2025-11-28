@@ -42,7 +42,7 @@ make apply BIRD_ENV=<environment>
 The `environment-setup` module provisions shared environment infrastructure used by multiple applications.
 
 ## Includes
-- Creation of IKS resources
+- Creation of EKS resources
 - Deployment of Consul infrastructure
 - Provisioning of an S3 bucket for images
 - Additional foundational environment-wide components
@@ -63,7 +63,7 @@ The `birdwatching-setup` module deploys all required infrastructure for the Bird
 - Compute resources
 - Networking components
 - Application-specific AWS services
-- Deployments into IKS or other compute layers (depending on architecture)
+- Deployments into EKS or other compute layers (depending on architecture)
 
 ## Notes
 - Must be deployed **after Environment Setup**
@@ -75,10 +75,10 @@ The `birdwatching-setup` module deploys all required infrastructure for the Bird
 The `illuminati-setup` module provisions infrastructure for the Illuminati application.
 
 ## Includes
-- IKS cluster resources
+- EKS cluster resources
 - RDS database
-- IKS node groups
-- IKS application deployments
+- EKS node groups
+- EKS application deployments
 
 ## Notes
 - Depends on the resources created in **Environment Setup**
@@ -124,7 +124,7 @@ To ensure correct dependency resolution, modules must be deployed in the followi
    - Sets up initial VPC
 
 2. **Environment Setup**
-   - Creates IKS
+   - Creates EKS
    - Deploys Consul
    - Creates shared S3 buckets
 
@@ -134,8 +134,8 @@ To ensure correct dependency resolution, modules must be deployed in the followi
 4. **Illuminati Setup**
    - Deploys Illuminati infrastructure
    - Creates RDS
-   - Creates IKS node groups
-   - Deploys IKS workloads
+   - Creates EKS node groups
+   - Deploys EKS workloads
 
 5. **Portal Setup**
    - Deploys static website infrastructure
